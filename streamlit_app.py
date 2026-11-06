@@ -17,19 +17,20 @@ try:
     st.success("¡Modelo cargado correctamente en la nube!")
 except Exception as e:
     st.error(f"No se pudo cargar el modelo: {e}")
-        
-                            feature_1 = st.number_input("Parámetro 1 (Ej: pH / Nivel de turbidez)", value=0.0)
-                            feature_2 = st.number_input("Parámetro 2 (Ej: Temperatura / Conductividad)", value=0.0)
-                            feature_3 = st.number_input("Parámetro 3 (Ej: Minerales disueltos)", value=0.0)
+# Campos de entrada
+feature_1 = st.number_input("Parámetro 1 (Ej: pH / Nivel de turbidez)", value=0.0)
+feature_2 = st.number_input("Parámetro 2 (Ej: Temperatura / Conductividad)", value=0.0)
+feature_3 = st.number_input("Parámetro 3 (Ej: Minerales disueltos)", value=0.0)
 
-                            # Botón para ejecutar la predicción
-                            if st.button("Ejecutar Análisis AquaCheck"):
-                                    input_data = pd.DataFrame([[feature_1, feature_2, feature_3]])
-                                        try:
-                                                    prediction = model.predict(input_data)
-                                                            st.markdown("### Resultado del Diagnóstico:")
-                                                                    st.info(f"El resultado de la evaluación es: **{prediction[0]}**")
-                                                                        except Exception as e:
-                                                                                    st.warning(f"Nota: Asegúrate de que el número de características sea el correcto. Error: {e}")
+# Botón para ejecutar la predicción
+if st.button("Ejecutar Análisis AquaCheck"):
+    input_data = pd.DataFrame([[feature_1, feature_2, feature_3]])
+    try:
+        prediction = model.predict(input_data)
+        st.markdown("### Resultado del Diagnóstico:")
+        st.info(f"El resultado de la evaluación es: **{prediction[0]}**")
+    except Exception as e:
+        st.warning(f"Nota: Asegúrate de que el número de características sea el correcto. Error: {e}")
+        
 
                                                                                     
