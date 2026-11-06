@@ -16,7 +16,7 @@ def load_model():
                 model = load_model()
 st.success("¡Modelo cargado correctamente en la nube!")
                     except Exception as e:
-                            st.error(f"No se pudo cargar el modelo: {e}")
+                             st.error(f"No se pudo cargar el modelo: {e}")
 
                             st.markdown("---")
                             st.subheader("Parámetros de Entrada")
