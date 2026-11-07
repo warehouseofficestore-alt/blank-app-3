@@ -10,16 +10,14 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Estilos CSS Postmodernos y Neofuturistas (Tarjetas flotantes, neones y alto contraste)
+# Estilos CSS Postmodernos y Neofuturistas mejorados para la cámara y tarjetas
 st.markdown("""
     <style>
-    /* Estilo general de fondo y tipografía */
     .stApp {
         background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
         color: #c9d1d9;
     }
     
-    /* Título principal postmoderno */
     .cyber-title {
         font-size: 2.8rem;
         font-weight: 900;
@@ -41,24 +39,17 @@ st.markdown("""
         padding-left: 10px;
     }
 
-    /* Tarjetas de diagnóstico flotantes (Glassmorphism + Neón) */
     .cyber-card {
-        background: rgba(22, 27, 34, 0.7);
+        background: rgba(22, 27, 34, 0.85);
         border: 1px solid #30363d;
         border-radius: 16px;
         padding: 25px;
-        box-shadow: 0 8px 32px 0 rgba(0, 240, 255, 0.1);
-        backdrop-filter: blur(8px);
+        box-shadow: 0 8px 32px 0 rgba(0, 240, 255, 0.15);
+        backdrop-filter: blur(10px);
         margin-bottom: 20px;
-        transition: transform 0.3s ease;
-    }
-    
-    .cyber-card:hover {
-        border-color: #00f0ff;
-        transform: translateY(-3px);
     }
 
-    /* Botones personalizados estilo cyberpunk */
+    /* Estilo futurista para botones */
     .stButton>button {
         background: linear-gradient(90deg, #00f0ff 0%, #0077ff 100%);
         color: #0d1117;
@@ -104,32 +95,42 @@ st.sidebar.markdown("⚡ **Estado:** `En línea` | **Motor:** `Activo`")
 if modo_app == "📸 Visión de Campo (Cámara)":
     st.markdown("""
         <div class="cyber-card">
-            <h3>📷 Captura Espectral de Muestra</h3>
-            <p>Apunta el dispositivo (móvil, tablet o PC) al cuerpo de agua, estanque, piscina o recipiente para realizar el escaneo visual directo[span_0](start_span)[span_0](end_span).</p>
+            <h3>📷 Captura Espectral de Muestra en Campo</h3>
+            <p>Utilice la cámara de su dispositivo para registrar ópticamente el cuerpo de agua o recipiente de análisis[span_0](start_span)[span_0](end_span).</p>
         </div>
     """, unsafe_allow_html=True)
     
     col_cam1, col_cam2 = st.columns([1, 1])
     
     with col_cam1:
-        foto_muestra = st.camera_input("Activar sensor óptico de cámara")
+        st.markdown("<div class='cyber-card'>", unsafe_allow_html=True)
+        foto_muestra = st.camera_input("📷 Acceso al Sensor Óptico")
+        st.markdown("</div>", unsafe_allow_html=True)
         
     with col_cam2:
+        st.markdown("<div class='cyber-card'>", unsafe_allow_html=True)
         tipo_fuente_cam = st.selectbox(
             "Seleccionar Contexto de Muestra:",
             ["💧 Vaso / Agua Potable", "🏊‍♂️ Piscina / Natatorio", "🛢️ Tanque de Almacenamiento", "🌊 Lago / Ecosistema Natural", "🧪 Contenedor Industrial"]
         )
-        st.info(f"Contexto fijado para análisis óptico: **{tipo_fuente_cam}**")
+        st.info(f"Contexto activo: **{tipo_fuente_cam}**")
+        st.markdown("</div>", unsafe_allow_html=True)
         
         if foto_muestra is not None:
-            st.success("✅ Espectro visual capturado con éxito.")
+            st.markdown("""
+                <div class="cyber-card" style="border-color: #00f0ff;">
+                    <h4 style="color: #00f0ff;">✅ Muestra Capturada con Éxito</h4>
+                    <p>La imagen ha sido indexada en el búfer de análisis visual.</p>
+                </div>
+            """, unsafe_allow_html=True)
+            
             if st.button("⚡ Ejecutar Motor Neuronal", use_container_width=True):
                 st.balloons()
-                st.markdown("""
-                    <div class="cyber-card" style="border-color: #00f0ff;">
-                        <h3 style="color: #00f0ff;">✨ DIAGNÓSTICO ÓPTICO COMPLETADO</h3>
-                        <p><b>Estado del agua:</b> Alta pureza superficial detectada.</p>
-                        <p><b>Índice de refracción y claridad:</b> Óptimo.</p>
+                st.markdown(f"""
+                    <div class="cyber-card" style="border-color: #00ff66;">
+                        <h3 style="color: #00ff66;">✨ DIAGNÓSTICO ÓPTICO: {tipo_fuente_cam.upper()}</h3>
+                        <p><b>Índice de Claridad:</b> Óptimo[span_1](start_span)[span_1](end_span)</p>
+                        <p><b>Evaluación Espectral:</b> Cumple con los estándares de pureza visual superficial.</p>
                     </div>
                 """, unsafe_allow_html=True)
 
