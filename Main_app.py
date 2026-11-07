@@ -1,16 +1,5 @@
-import subprocess
-import sys
-
-try:
-    import joblib
-    import sklearn
-    import pandas
-except ImportError:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "joblib", "scikit-learn", "pandas"])
-    import joblib
-    import sklearn
-    import pandas
-
+import joblib
+import pandas as pd
 import streamlit as st
 
 st.set_page_config(page_title="AquaCheck")
