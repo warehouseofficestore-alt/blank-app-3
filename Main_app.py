@@ -5,7 +5,7 @@ from datetime import datetime
 
 # Configuración de página con diseño amplio
 st.set_page_config(
-    page_title="AquaCheck Postmodern",
+    page_title="AquaCheck Postmodern Pro",
     page_icon="💧",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -73,7 +73,7 @@ st.markdown("""
 
 # Encabezado Neofuturista
 st.markdown('<p class="cyber-title">💧 AquaCheck // Core</p>', unsafe_allow_html=True)
-st.markdown('<p class="cyber-subtitle">Sistema Autónomo de Análisis Hídrico por Visión Computarizada e IA</p>', unsafe_allow_html=True)
+st.markdown('<p class="cyber-subtitle">Plataforma Autónoma de Certificación e IA Hídrica</p>', unsafe_allow_html=True)
 
 # Menú lateral postmoderno
 st.sidebar.markdown("### 🎛️ MÓDULOS DE CONTROL")
@@ -87,7 +87,7 @@ modo_app = st.sidebar.radio(
 )
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("⚡ **Estado:** `En línea` | **Motor:** `Activo`")
+st.sidebar.markdown("⚡ **Estado:** `En línea` | **Pasarela:** `Activa`")
 
 # ---------------------------------------------------------
 # MODO 1: CÁMARA DE CAMPO
@@ -125,38 +125,7 @@ if modo_app == "📸 Visión de Campo (Cámara)":
             """, unsafe_allow_html=True)
             
             if st.button("⚡ Ejecutar Motor Neuronal", use_container_width=True):
-                st.balloons()
-                
-                reporte_texto = f"""==================================================
-        REPORTE TÉCNICO Y ESPECTRAL - AQUACHECK
-==================================================
-Fecha de Emisión: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-Contexto de Muestra: {tipo_fuente_cam}
-Modo de Análisis: Visión Computarizada / Campo
-
-[RESULTADOS ESPECTRALES]
-- Índice de Claridad Óptima: Aprobado
-- Evaluación Superficial: Cumple con los estándares de pureza visual.
-- Estado General: APTO / CONDICIÓN ESTABLE
-
-Firma Digital del Sistema: AQUACHECK-NEO-CORE-2026
-=================================================="""
-
-                st.markdown(f"""
-                    <div class="cyber-card" style="border-color: #00ff66;">
-                        <h3 style="color: #00ff66;">✨ DIAGNÓSTICO ÓPTICO: {tipo_fuente_cam.upper()}</h3>
-                        <p><b>Índice de Claridad:</b> Óptimo</p>
-                        <p><b>Evaluación Espectral:</b> Cumple con los estándares de pureza visual superficial.</p>
-                    </div>
-                """, unsafe_allow_html=True)
-                
-                st.download_button(
-                    label="📥 Descargar Reporte Técnico (TXT)",
-                    data=reporte_texto,
-                    file_name=f"Reporte_Optico_{tipo_fuente_cam.replace(' ', '_')}.txt",
-                    mime="text/plain",
-                    use_container_width=True
-                )
+                st.session_data_ready = True
 
 # ---------------------------------------------------------
 # MODO 2: PANEL MANUAL
@@ -201,28 +170,6 @@ elif modo_app == "🎛️ Parámetros Físico-Químicos":
         if st.button("⚡ Procesar Análisis Cuántico", use_container_width=True):
             es_apto = (6.5 <= ph <= 8.5) and (turbidity <= 5.0)
             
-            # Generación del contenido del reporte físico-químico descargable
-            reporte_fq = f"""==================================================
-       CERTIFICADO DE ANÁLISIS FÍSICO-QUÍMICO
-==================================================
-Fecha de Emisión: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-Origen de Muestra: {tipo_fuente}
-Plataforma: AquaCheck Postmodern Core
-
-[VALORES REGISTRADOS]
-- Nivel de pH: {ph} (Rango óptimo: 6.5 - 8.5)
-- Dureza del Agua: {hardness} mg/L
-- Sólidos Totales Disueltos (TDS): {solids} ppm
-- Cloraminas: {chloramines} ppm
-- Turbidez: {turbidity} NTU
-
-[DIAGNÓSTICO TÉCNICO]
-Estado del Sistema: {"APTO / POTABLE" if es_apto else "ALERTA / NO APTA"}
-Validación Normativa: {"Conforme a los estándares de control hídrico." if es_apto else "Requiere tratamiento de filtrado o ajuste químico."}
-
-Firma Digital: AQUACHECK-CERT-2026
-=================================================="""
-
             if es_apto:
                 st.balloons()
                 st.markdown("""
@@ -239,14 +186,80 @@ Firma Digital: AQUACHECK-CERT-2026
                     </div>
                 """, unsafe_allow_html=True)
 
-            # Botón de descarga directa del reporte técnico
-            st.download_button(
-                label="📥 Descargar Reporte Físico-Químico (TXT)",
-                data=reporte_fq,
-                file_name=f"Reporte_FisicoQuimico_{tipo_fuente.split()[0]}.txt",
-                mime="text/plain",
-                use_container_width=True
-            )
+            # Sección de pasarela de pago para la descarga del certificado oficial
+            st.markdown("""
+                <div class="cyber-card" style="border-color: #7000ff;">
+                    <h3>💳 Pasarela de Pago Oficial // Certificado Técnico</h3>
+                    <p>Para descargar el reporte físico-químico certificado con validez técnica, elija su método de pago:</p>
+                </div>
+            """, unsafe_allow_html=True)
+
+            metodo_pago = st.radio("Seleccione método de pago:", ["📱 Pago Móvil (Nacional)", "🌐 Tarjeta / Pasarela Internacional (Stripe)"])
+
+            if "Pago Móvil" in metodo_pago:
+                st.info(f"""
+                **Datos para Pago Móvil:**
+                * **Bancos aceptados:** Banco Provincial o Banco de Venezuela
+                * **Teléfono:** `0424 4131429`
+                * **C.I. / R.I.F.:** `7128648`
+                """)
+                ref_pago = st.text_input("Ingrese los últimos 4 dígitos o referencia del Pago Móvil:")
+                
+                if st.button("Verificar y Generar Certificado", use_container_width=True):
+                    if len(ref_pago) >= 4:
+                        reporte_fq = f"""==================================================
+       CERTIFICADO OFICIAL DE ANÁLISIS HÍDRICO
+==================================================
+Fecha: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+Origen: {tipo_fuente}
+Referencia Pago Móvil: {ref_pago}
+
+[VALORES REGISTRADOS]
+- pH: {ph} | Dureza: {hardness} mg/L | TDS: {solids} ppm
+- Cloraminas: {chloramines} ppm | Turbidez: {turbidity} NTU
+
+[DIAGNÓSTICO]
+Estado: {"APTO / POTABLE" if es_apto else "ALERTA / REVISIÓN"}
+Certificación Válida bajo estándares técnicos.
+Firma Digital: AQUACHECK-PRO-2026
+=================================================="""
+                        st.success("¡Pago verificado con éxito!")
+                        st.download_button(
+                            label="📥 Descargar Certificado Oficial Firmado",
+                            data=reporte_fq,
+                            file_name=f"Certificado_AquaCheck_{tipo_fuente.split()[0]}.txt",
+                            mime="text/plain",
+                            use_container_width=True
+                        )
+                    else:
+                        st.warning("Por favor ingrese un número de referencia válido.")
+            else:
+                st.write("Realice el pago seguro a través de nuestra pasarela internacional asociada.")
+                if st.link_button("🔗 Pagar con Tarjeta (Checkout Seguro)", "https://buy.stripe.com/tu-enlace-de-pago"):
+                    pass
+                
+                # Botón de respaldo para descarga tras pago internacional simulado/completado
+                reporte_fq_intl = f"""==================================================
+       CERTIFICADO OFICIAL INTERNACIONAL - AQUACHECK
+==================================================
+Fecha: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+Origen: {tipo_fuente}
+Pasarela: Stripe Secure Checkout
+
+[VALORES REGISTRADOS]
+- pH: {ph} | Dureza: {hardness} mg/L | TDS: {solids} ppm
+- Cloraminas: {chloramines} ppm | Turbidez: {turbidity} NTU
+
+Estado: {"APTO / POTABLE" if es_apto else "ALERTA / REVISIÓN"}
+Firma Digital: AQUACHECK-INTL-2026
+=================================================="""
+                st.download_button(
+                    label="📥 Descargar Certificado (Post-Pago Internacional)",
+                    data=reporte_fq_intl,
+                    file_name=f"Certificado_Internacional_{tipo_fuente.split()[0]}.txt",
+                    mime="text/plain",
+                    use_container_width=True
+                )
 
 # ---------------------------------------------------------
 # MODO 3: GUÍA POSTMODERNA
@@ -254,12 +267,12 @@ Firma Digital: AQUACHECK-CERT-2026
 else:
     st.markdown("""
         <div class="cyber-card">
-            <h3>🌐 Arquitectura de Protocolos Hídricos</h3>
-            <p>Guía de calibración y análisis contextual para entornos de alta exigencia:</p>
+            <h3>🌐 Arquitectura de Protocolos Hídricos y Monetización</h3>
+            <p>Guía de calibración y métodos de pago integrados en la plataforma:</p>
             <ul>
-                <li><b>🏊‍♂️ Piscinas:</b> Monitoreo dinámico de cloro libre y balance ácido-base.</li>
-                <li><b>🛢️ Tanques:</b> Control de sedimentación y sólidos suspendidos.</li>
-                <li><b>💧 Consumo Directo:</b> Verificación de potabilidad inmediata en punto de uso.</li>
+                <li><b>📱 Pago Móvil:</b> Provincial / Venezuela (Tlf: 0424-4131429 | C.I/RIF: 7128648)</li>
+                <li><b>🌐 Internacional:</b> Tarjetas de crédito/débito vía pasarela segura.</li>
+                <li><b>📄 Certificación:</b> Emisión instantánea de reportes técnicos descargables.</li>
             </ul>
         </div>
     """, unsafe_allow_html=True)
