@@ -1,6 +1,6 @@
+import streamlit as st
 import joblib
 import pandas as pd
-import streamlit as st
 
 st.set_page_config(page_title="AquaCheck")
 st.title("💧 AquaCheck: Sistema Inteligente de Calidad de Agua")
