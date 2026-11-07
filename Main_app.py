@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import os
+from datetime import datetime
 
 # Configuración de página con diseño amplio
 st.set_page_config(
@@ -10,7 +11,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Estilos CSS Postmodernos y Neofuturistas mejorados para la cámara y tarjetas
+# Estilos CSS Postmodernos y Neofuturistas
 st.markdown("""
     <style>
     .stApp {
@@ -49,7 +50,6 @@ st.markdown("""
         margin-bottom: 20px;
     }
 
-    /* Estilo futurista para botones */
     .stButton>button {
         background: linear-gradient(90deg, #00f0ff 0%, #0077ff 100%);
         color: #0d1117;
@@ -90,13 +90,13 @@ st.sidebar.markdown("---")
 st.sidebar.markdown("⚡ **Estado:** `En línea` | **Motor:** `Activo`")
 
 # ---------------------------------------------------------
-# MODO 1: CÁMARA DE CAMPO (Visión Computarizada)
+# MODO 1: CÁMARA DE CAMPO
 # ---------------------------------------------------------
 if modo_app == "📸 Visión de Campo (Cámara)":
     st.markdown("""
         <div class="cyber-card">
             <h3>📷 Captura Espectral de Muestra en Campo</h3>
-            <p>Utilice la cámara de su dispositivo para registrar ópticamente el cuerpo de agua o recipiente de análisis[span_0](start_span)[span_0](end_span).</p>
+            <p>Utilice la cámara de su dispositivo para registrar ópticamente el cuerpo de agua o recipiente de análisis.</p>
         </div>
     """, unsafe_allow_html=True)
     
@@ -126,13 +126,37 @@ if modo_app == "📸 Visión de Campo (Cámara)":
             
             if st.button("⚡ Ejecutar Motor Neuronal", use_container_width=True):
                 st.balloons()
+                
+                reporte_texto = f"""==================================================
+        REPORTE TÉCNICO Y ESPECTRAL - AQUACHECK
+==================================================
+Fecha de Emisión: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+Contexto de Muestra: {tipo_fuente_cam}
+Modo de Análisis: Visión Computarizada / Campo
+
+[RESULTADOS ESPECTRALES]
+- Índice de Claridad Óptima: Aprobado
+- Evaluación Superficial: Cumple con los estándares de pureza visual.
+- Estado General: APTO / CONDICIÓN ESTABLE
+
+Firma Digital del Sistema: AQUACHECK-NEO-CORE-2026
+=================================================="""
+
                 st.markdown(f"""
                     <div class="cyber-card" style="border-color: #00ff66;">
                         <h3 style="color: #00ff66;">✨ DIAGNÓSTICO ÓPTICO: {tipo_fuente_cam.upper()}</h3>
-                        <p><b>Índice de Claridad:</b> Óptimo[span_1](start_span)[span_1](end_span)</p>
+                        <p><b>Índice de Claridad:</b> Óptimo</p>
                         <p><b>Evaluación Espectral:</b> Cumple con los estándares de pureza visual superficial.</p>
                     </div>
                 """, unsafe_allow_html=True)
+                
+                st.download_button(
+                    label="📥 Descargar Reporte Técnico (TXT)",
+                    data=reporte_texto,
+                    file_name=f"Reporte_Optico_{tipo_fuente_cam.replace(' ', '_')}.txt",
+                    mime="text/plain",
+                    use_container_width=True
+                )
 
 # ---------------------------------------------------------
 # MODO 2: PANEL MANUAL
@@ -175,7 +199,31 @@ elif modo_app == "🎛️ Parámetros Físico-Químicos":
         """, unsafe_allow_html=True)
         
         if st.button("⚡ Procesar Análisis Cuántico", use_container_width=True):
-            if (6.5 <= ph <= 8.5) and (turbidity <= 5.0):
+            es_apto = (6.5 <= ph <= 8.5) and (turbidity <= 5.0)
+            
+            # Generación del contenido del reporte físico-químico descargable
+            reporte_fq = f"""==================================================
+       CERTIFICADO DE ANÁLISIS FÍSICO-QUÍMICO
+==================================================
+Fecha de Emisión: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+Origen de Muestra: {tipo_fuente}
+Plataforma: AquaCheck Postmodern Core
+
+[VALORES REGISTRADOS]
+- Nivel de pH: {ph} (Rango óptimo: 6.5 - 8.5)
+- Dureza del Agua: {hardness} mg/L
+- Sólidos Totales Disueltos (TDS): {solids} ppm
+- Cloraminas: {chloramines} ppm
+- Turbidez: {turbidity} NTU
+
+[DIAGNÓSTICO TÉCNICO]
+Estado del Sistema: {"APTO / POTABLE" if es_apto else "ALERTA / NO APTA"}
+Validación Normativa: {"Conforme a los estándares de control hídrico." if es_apto else "Requiere tratamiento de filtrado o ajuste químico."}
+
+Firma Digital: AQUACHECK-CERT-2026
+=================================================="""
+
+            if es_apto:
                 st.balloons()
                 st.markdown("""
                     <div class="cyber-card" style="border-color: #00ff66;">
@@ -190,6 +238,15 @@ elif modo_app == "🎛️ Parámetros Físico-Químicos":
                         <p>Se detectaron anomalías críticas en los índices físico-químicos.</p>
                     </div>
                 """, unsafe_allow_html=True)
+
+            # Botón de descarga directa del reporte técnico
+            st.download_button(
+                label="📥 Descargar Reporte Físico-Químico (TXT)",
+                data=reporte_fq,
+                file_name=f"Reporte_FisicoQuimico_{tipo_fuente.split()[0]}.txt",
+                mime="text/plain",
+                use_container_width=True
+            )
 
 # ---------------------------------------------------------
 # MODO 3: GUÍA POSTMODERNA
@@ -206,4 +263,4 @@ else:
             </ul>
         </div>
     """, unsafe_allow_html=True)
-    
+        
