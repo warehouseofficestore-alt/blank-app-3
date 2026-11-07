@@ -10,11 +10,24 @@ st.set_page_config(
 
 # Encabezado principal
 st.title("💧 AquaCheck: Inteligencia Artificial Aplicada al Agua")
-st.write("Plataforma avanzada de análisis predictivo de calidad y pureza hídrica.")
+st.write("Plataforma avanzada de análisis predictivo y control de pureza hídrica.")
 
-# Panel lateral moderno para los parámetros de entrada
-st.sidebar.header("🎛️ Parámetros de Análisis")
-st.sidebar.write("Ingrese los valores físico-químicos:")
+# Panel lateral moderno para los parámetros de entrada y tipo de fuente
+st.sidebar.header("📍 Origen de la Muestra")
+tipo_fuente = st.sidebar.selectbox(
+    "Seleccione el cuerpo o recipiente de agua:",
+    [
+        "💧 Vaso / Agua Potable Directa", 
+        "🏊‍♂️ Piscina / Natatorio", 
+        "🛢️ Tanque de Almacenamiento", 
+        "🌊 Lago / Cuerpo Natural de Agua", 
+        "🧪 Otro Recipiente Industrial"
+    ]
+)
+
+st.sidebar.markdown("---")
+st.sidebar.header("🎛️ Parámetros Físico-Químicos")
+st.sidebar.write(f"Configurando muestra para: **{tipo_fuente}**")
 
 ph = st.sidebar.slider("Nivel de pH", 0.0, 14.0, 7.2, 0.1)
 hardness = st.sidebar.number_input("Dureza del agua (mg/L)", min_value=0.0, max_value=500.0, value=150.0)
@@ -30,8 +43,17 @@ turbidity = st.sidebar.slider("Turbidez (NTU)", 0.0, 10.0, 3.5, 0.1)
 col1, col2 = st.columns([2, 1])
 
 with col1:
-    st.subheader("📊 Resumen de Parámetros Seleccionados")
-    st.info("La interfaz está configurada y lista para procesar los valores seleccionados.")
+    st.subheader(f"📊 Panel de Control: {tipo_fuente}")
+    st.info("Ajuste los valores en el panel lateral izquierdo según la lectura de su muestra y presione 'Ejecutar Diagnóstico'.")
+    
+    # Mostrar resumen visual de los datos configurados
+    import pandas as pd
+    resumen_df = pd.DataFrame({
+        'Parámetro': ['pH', 'Dureza', 'Sólidos (TDS)', 'Cloraminas', 'Turbidez'],
+        'Valor Muestra': [ph, hardness, solids, chloramines, turbidity],
+        'Unidad': ['pH', 'mg/L', 'ppm', 'ppm', 'NTU']
+    })
+    st.dataframe(resumen_df, use_container_width=True)
 
 with col2:
     st.subheader("⚙️ Estado del Sistema")
@@ -39,7 +61,6 @@ with col2:
         try:
             import joblib
             import os
-            import pandas as pd
 
             input_data = pd.DataFrame({
                 'ph': [ph],
@@ -59,24 +80,35 @@ with col2:
                 prediction = model.predict(input_data)
                 
                 st.markdown("---")
+                st.write(f"**Origen analizado:** {tipo_fuente}")
                 if prediction[0] == 1 or prediction[0] == "Potable":
                     st.balloons()
-                    st.success("### Resultado: AGUA POTABLE 💧")
-                    st.write("El perfil hídrico cumple con los estándares óptimos de pureza.")
+                    st.success("### Resultado: AGUA APTO / POTABLE 💧")
+                    st.write("La muestra cumple con los parámetros óptimos evaluados por el modelo.")
                 else:
                     st.error("### Resultado: NO APTA / ALERTA ⚠️")
-                    st.write("Los parámetros superan los límites recomendados de seguridad.")
+                    st.write("Se detectaron valores fuera de tolerancia en los componentes analizados.")
             else:
-                raise Exception("Modelo no encontrado en la ruta.")
+                raise Exception("Modelo no encontrado.")
 
         except Exception:
-            # Motor de respaldo inteligente basado en estándares de la OMS si joblib aún se está instalando
+            # Motor de respaldo inteligente contextualizado
             st.markdown("---")
-            # Evaluación lógica estándar de potabilidad basada en pH y Turbidez
-            if (6.5 <= ph <= 8.5) and (turbidity <= 5.0) and (chloramines <= 4.0):
-                st.balloons()
-                st.success("### Resultado: AGUA POTABLE (Validación Estándar) 💧")
-                st.write("Los valores analizados se encuentran dentro del rango de seguridad establecido.")
+            st.write(f"**Muestra evaluada:** {tipo_fuente}")
+            
+            # Validación adaptativa según el tipo de fuente seleccionado
+            if "Piscina" in tipo_fuente:
+                valida = (7.2 <= ph <= 7.6) and (turbidity <= 1.0)
+            elif "Tanque" in tipo_fuente:
+                valida = (6.5 <= ph <= 8.5) and (turbidity <= 5.0)
             else:
-                st.error("### Resultado: REVISIÓN REQUERIDA (Alerta) ⚠️")
-                st.write("Algunos parámetros clave (pH, Turbidez o Cloraminas) escapan de los límites óptimos.")
+                valida = (6.5 <= ph <= 8.5) and (turbidity <= 5.0) and (chloramines <= 4.0)
+
+            if valida:
+                st.balloons()
+                st.success("### Resultado: CONDICIÓN ÓPTIMA 💧")
+                st.write(f"El análisis para **{tipo_fuente}** se encuentra dentro de los parámetros seguros.")
+            else:
+                st.error("### Resultado: ATENCIÓN REQUERIDA ⚠️")
+                st.write(f"Los niveles registrados en esta muestra de **{tipo_fuente}** requieren ajuste o filtrado.")
+    
