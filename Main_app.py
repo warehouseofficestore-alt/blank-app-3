@@ -1,11 +1,21 @@
+import subprocess
+import sys
+
+try:
+    import joblib
+    import sklearn
+    import pandas
+except ImportError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "joblib", "scikit-learn", "pandas"])
+    import joblib
+    import sklearn
+    import pandas
+
 import streamlit as st
-import joblib
-import pandas as pd
 
-st.set_page_config(page_title="AquaCheck", page_icon="💧")
-
-st.title("💧 AquaCheck: Sistema Inteligente")
-st.write("Bienvenida a la plataforma de predicción y control de calidad. Ingrese los parámetros requeridos para realizar...")
+st.set_page_config(page_title="AquaCheck")
+st.title("💧 AquaCheck: Sistema Inteligente de Calidad de Agua")
+st.write("Bienvenida a la plataforma de análisis")
 
 # Cargar el modelo entrenado de forma eficiente
 @st.cache_resource
@@ -14,23 +24,7 @@ def load_model():
 
 try:
     model = load_model()
-    st.success("¡Modelo cargado correctamente en la nube!")
+    st.success("¡Modelo cargado correctamente!")
 except Exception as e:
     st.error(f"No se pudo cargar el modelo: {e}")
-# Campos de entrada
-feature_1 = st.number_input("Parámetro 1 (Ej: pH / Nivel de turbidez)", value=0.0)
-feature_2 = st.number_input("Parámetro 2 (Ej: Temperatura / Conductividad)", value=0.0)
-feature_3 = st.number_input("Parámetro 3 (Ej: Minerales disueltos)", value=0.0)
-
-# Botón para ejecutar la predicción
-if st.button("Ejecutar Análisis AquaCheck"):
-    input_data = pd.DataFrame([[feature_1, feature_2, feature_3]])
-    try:
-        prediction = model.predict(input_data)
-        st.markdown("### Resultado del Diagnóstico:")
-        st.info(f"El resultado de la evaluación es: **{prediction[0]}**")
-    except Exception as e:
-        st.warning(f"Nota: Asegúrate de que el número de características sea el correcto. Error: {e}")
-        
-
-                                                                                    
+    
