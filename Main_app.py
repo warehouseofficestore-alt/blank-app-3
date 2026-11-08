@@ -24,8 +24,9 @@ st.markdown("""
 st.markdown('<p class="cyber-title">💧 AquaCheck // Advanced Lab</p>', unsafe_allow_html=True)
 st.markdown('<p class="cyber-subtitle">Plataforma de Certificación Hídrica con Perfil Bacteriológico y Espectroscopia</p>', unsafe_allow_html=True)
 
+# Menú limpio sin exponer datos sensibles públicamente
 st.sidebar.markdown("### 🎛️ MÓDULOS")
-modo_app = st.sidebar.radio("Seleccionar:", ["📸 Visión de Campo (Espectral)", "🎛️ Panel Analítico Completo", "🌐 Protocolos", "📞 Contacto y Pago Móvil"])
+modo_app = st.sidebar.radio("Seleccionar:", ["📸 Visión de Campo (Espectral)", "🎛️ Panel Analítico Completo", "🌐 Protocolos", "📞 Contacto Corporativo"])
 
 st.sidebar.markdown("---")
 st.sidebar.markdown(
@@ -44,7 +45,6 @@ if modo_app == "📸 Visión de Campo (Espectral)":
         image_pil = Image.open(foto).convert('RGB')
         img_array = np.array(image_pil)
         
-        # Extracción de espectro mediante matriz de NumPy
         alto, ancho, _ = img_array.shape
         linea = img_array[alto//2, :, :]
         r = linea[:, 0].astype(float) / 255.0
@@ -84,39 +84,51 @@ elif modo_app == "🎛️ Panel Analítico Completo":
         st.dataframe(df, use_container_width=True)
 
     with col2:
-        st.markdown('<div class="cyber-card"><h3>Diagnóstico Integral</h3></div>', unsafe_allow_html=True)
-        if st.button("Procesar Análisis"):
+        st.markdown('<div class="cyber-card"><h3>Diagnóstico Integral y Emisión</h3></div>', unsafe_allow_html=True)
+        
+        # Botón para procesar análisis inicial
+        if st.button("Procesar Análisis e Iniciar Emisión"):
+            st.session_state['analisis_procesado'] = True
+
+        # Los datos de pago y referencia se despliegan únicamente en esta fase de emisión
+        if st.session_state.get('analisis_procesado', False):
             valido = (6.5 <= ph <= 8.5) and (turbidity <= 5.0) and (coliformes == "Ausente (0 UFC)")
             if valido:
-                st.balloons()
                 st.success("ESTADO: PRE-APTO (Estimación Digital)")
             else:
                 st.error("ESTADO: ALERTA / REQUIERE REVISIÓN")
 
-            st.markdown("### 💳 Pago Móvil / Donativo")
-            st.info("**Banco:** Provincial / Venezuela\n**Teléfono:** 0424 4131429\n**C.I./RIF:** 7128648")
-            ref = st.text_input("Ingrese Referencia de Pago Móvil:")
+            st.markdown("---")
+            st.markdown("#### 💳 Datos Bancarios y Pago Móvil (Emisión de Certificado)")
+            st.info(
+                "**Banco:** Provincial / Venezuela\n\n"
+                "**Teléfono:** 0424 4131429\n\n"
+                "**C.I./RIF:** 7128648"
+            )
             
-            if st.button("Generar Certificado Oficial"):
-                if len(ref) >= 4:
-                    rep = (
-                        "==================================================\n"
-                        "    CERTIFICADO DE PRE-DIAGNÓSTICO HÍDRICO\n"
-                        "==================================================\n"
-                        f"Fecha: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-                        f"Origen: {tipo_fuente}\n"
-                        f"Referencia Pago Móvil: {ref}\n\n"
-                        f"pH: {ph} | TDS: {solids} ppm | Turbidez: {turbidity} NTU\n"
-                        f"Estado Estimado: {'PRE-APTO (Sujeto a confirmación física)' if valido else 'ALERTA TÉCNICA'}\n\n"
-                        "[AVISO LEGAL OBLIGATORIO]\n"
-                        "Este reporte es una estimación digital y de pre-diagnóstico.\n"
-                        "Es estrictamente obligatorio realizar pruebas físicas de\n"
-                        "laboratorio para certificar la inocuidad real del agua.\n"
-                        "=================================================="
-                    )
-                    st.download_button("📥 Descargar Certificado con Aviso Legal (TXT)", data=rep, file_name="Certificado_Pre-diagnostico.txt", mime="text/plain")
-                else:
-                    st.warning("Ingrese una referencia válida.")
+            ref = st.text_input("Ingrese Referencia de Pago Móvil para Liberar el Botón:")
+            
+            # El botón de descarga se libera automáticamente al validar la referencia de pago
+            if ref and len(ref) >= 4:
+                st.success("¡Pago validado correctamente! Botón de certificado liberado.")
+                rep = (
+                    "==================================================\n"
+                    "    CERTIFICADO DE PRE-DIAGNÓSTICO HÍDRICO\n"
+                    "==================================================\n"
+                    f"Fecha: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+                    f"Origen: {tipo_fuente}\n"
+                    f"Referencia Pago Móvil: {ref}\n\n"
+                    f"pH: {ph} | TDS: {solids} ppm | Turbidez: {turbidity} NTU\n"
+                    f"Estado Estimado: {'PRE-APTO (Sujeto a confirmación física)' if valido else 'ALERTA TÉCNICA'}\n\n"
+                    "[AVISO LEGAL OBLIGATORIO]\n"
+                    "Este reporte es una estimación digital y de pre-diagnóstico.\n"
+                    "Es estrictamente obligatorio realizar pruebas físicas de\n"
+                    "laboratorio para certificar la inocuidad real del agua.\n"
+                    "=================================================="
+                )
+                st.download_button("📥 Descargar Certificado Oficial TXT", data=rep, file_name="Certificado_Oficial_AquaCheck.txt", mime="text/plain")
+            else:
+                st.warning("Ingrese los datos de referencia de pago para habilitar la descarga del certificado.")
 
 elif modo_app == "🌐 Protocolos":
     st.markdown("""
@@ -129,10 +141,9 @@ elif modo_app == "🌐 Protocolos":
 else:
     st.markdown("""
         <div class="cyber-card">
-            <h3>📞 Contacto y Colaboración</h3>
-            <p><b>WhatsApp / Pago Móvil:</b> +58 424 4131429</p>
+            <h3>📞 Contacto Corporativo</h3>
             <p><b>Correos:</b> warehouseofficestore@gmail.com | valdezinversionesships@gmail.com</p>
-            <p><b>Datos Bancarios:</b> Provincial / Venezuela | C.I./RIF: 7128648</p>
+            <p>Canal de atención comercial y soporte técnico especializado.</p>
         </div>
     """, unsafe_allow_html=True)
-    
+        
