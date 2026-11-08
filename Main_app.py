@@ -86,11 +86,11 @@ elif modo_app == "🎛️ Panel Analítico Completo":
     with col2:
         st.markdown('<div class="cyber-card"><h3>Diagnóstico Integral y Emisión</h3></div>', unsafe_allow_html=True)
         
-        # Botón para procesar análisis inicial
+        # Botón para procesar el análisis inicial
         if st.button("Procesar Análisis e Iniciar Emisión"):
             st.session_state['analisis_procesado'] = True
 
-        # Los datos de pago y referencia se despliegan únicamente en esta fase de emisión
+        # Los datos de pago, el monto y la referencia se despliegan únicamente en esta fase
         if st.session_state.get('analisis_procesado', False):
             valido = (6.5 <= ph <= 8.5) and (turbidity <= 5.0) and (coliformes == "Ausente (0 UFC)")
             if valido:
@@ -99,25 +99,29 @@ elif modo_app == "🎛️ Panel Analítico Completo":
                 st.error("ESTADO: ALERTA / REQUIERE REVISIÓN")
 
             st.markdown("---")
-            st.markdown("#### 💳 Datos Bancarios y Pago Móvil (Emisión de Certificado)")
+            st.markdown("#### 💳 Datos Bancarios, Monto y Pago Móvil")
             st.info(
+                "**Monto a Pagar / Donativo:** 15.00 USD (o su eq. en Bs. Tasa BCV)\n\n"
                 "**Banco:** Provincial / Venezuela\n\n"
                 "**Teléfono:** 0424 4131429\n\n"
                 "**C.I./RIF:** 7128648"
             )
             
-            ref = st.text_input("Ingrese Referencia de Pago Móvil para Liberar el Botón:")
+            ref = st.text_input("Ingrese Referencia de Pago Móvil para Liberar el Archivo:")
             
-            # El botón de descarga se libera automáticamente al validar la referencia de pago
+            # El archivo y los resultados se liberan y habilitan automáticamente al validar el pago
             if ref and len(ref) >= 4:
-                st.success("¡Pago validado correctamente! Botón de certificado liberado.")
+                st.success("¡Pago validado correctamente! Archivos de resultados y certificado liberados.")
+                
+                # Generación del archivo TXT de resultado y certificado
                 rep = (
                     "==================================================\n"
                     "    CERTIFICADO DE PRE-DIAGNÓSTICO HÍDRICO\n"
                     "==================================================\n"
                     f"Fecha: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
                     f"Origen: {tipo_fuente}\n"
-                    f"Referencia Pago Móvil: {ref}\n\n"
+                    f"Referencia Pago Móvil: {ref}\n"
+                    f"Monto Procesado: 15.00 USD\n\n"
                     f"pH: {ph} | TDS: {solids} ppm | Turbidez: {turbidity} NTU\n"
                     f"Estado Estimado: {'PRE-APTO (Sujeto a confirmación física)' if valido else 'ALERTA TÉCNICA'}\n\n"
                     "[AVISO LEGAL OBLIGATORIO]\n"
@@ -126,9 +130,15 @@ elif modo_app == "🎛️ Panel Analítico Completo":
                     "laboratorio para certificar la inocuidad real del agua.\n"
                     "=================================================="
                 )
-                st.download_button("📥 Descargar Certificado Oficial TXT", data=rep, file_name="Certificado_Oficial_AquaCheck.txt", mime="text/plain")
+                
+                # Liberación automática de los botones de descarga
+                col_dl1, col_dl2 = st.columns(2)
+                with col_dl1:
+                    st.download_button("📥 Descargar Certificado TXT", data=rep, file_name="Certificado_AquaCheck.txt", mime="text/plain")
+                with col_dl2:
+                    st.download_button("🖼️ Descargar Resumen de Análisis", data=rep, file_name="Resultado_Analisis.txt", mime="text/plain")
             else:
-                st.warning("Ingrese los datos de referencia de pago para habilitar la descarga del certificado.")
+                st.warning("Ingrese los datos de referencia de pago para habilitar la descarga de los archivos de resultado.")
 
 elif modo_app == "🌐 Protocolos":
     st.markdown("""
@@ -146,4 +156,5 @@ else:
             <p>Canal de atención comercial y soporte técnico especializado.</p>
         </div>
     """, unsafe_allow_html=True)
+    
         
