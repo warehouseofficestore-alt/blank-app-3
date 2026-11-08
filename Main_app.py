@@ -2,16 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from datetime import datetime
-from io import BytesIO
 from PIL import Image
-import plotly.graph_objects as go
-
-# Intento seguro de importar OpenCV
-try:
-    import cv2
-    CV2_AVAILABLE = True
-except ImportError:
-    CV2_AVAILABLE = False
 
 st.set_page_config(
     page_title="AquaCheck Pro - Laboratorio Avanzado",
@@ -36,7 +27,6 @@ st.markdown('<p class="cyber-subtitle">Plataforma de Certificación Hídrica con
 st.sidebar.markdown("### 🎛️ MÓDULOS")
 modo_app = st.sidebar.radio("Seleccionar:", ["📸 Visión de Campo (Espectral)", "🎛️ Panel Analítico Completo", "🌐 Protocolos", "📞 Contacto y Pago Móvil"])
 
-# Descargo de responsabilidad en la barra lateral
 st.sidebar.markdown("---")
 st.sidebar.markdown(
     "<small style='color: #8b949e;'><b>Aviso Legal:</b> AquaCheck es una herramienta digital de pre-diagnóstico. Se requiere validación mediante pruebas físicas y microbiológicas de laboratorio para confirmar la potabilidad final del agua.</small>",
@@ -44,7 +34,7 @@ st.sidebar.markdown(
 )
 
 if modo_app == "📸 Visión de Campo (Espectral)":
-    st.markdown('<div class="cyber-card"><h3>📷 Captura Espectral Hiperrealista</h3><p>Capture la muestra para generar el análisis óptico y el gráfico de espectro integrado.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="cyber-card"><h3>📷 Captura Espectral Hiperrealista</h3><p>Capture la muestra para generar el análisis óptico y la descomposición espectral en pantalla.</p></div>', unsafe_allow_html=True)
     
     col_c1, col_c2 = st.columns([1, 1])
     with col_c1:
@@ -54,25 +44,19 @@ if modo_app == "📸 Visión de Campo (Espectral)":
         image_pil = Image.open(foto).convert('RGB')
         img_array = np.array(image_pil)
         
+        # Extracción de espectro mediante matriz de NumPy
         alto, ancho, _ = img_array.shape
         linea = img_array[alto//2, :, :]
-        r, g, b = linea[:, 0], linea[:, 1], linea[:, 2]
-        ondas = np.linspace(400, 700, ancho)
-
-        fig = go.Figure()
-        fig.add_trace(go.Scatter(x=ondas, y=r, name='Canal R (600nm)', line=dict(color='#ff3366', width=2)))
-        fig.add_trace(go.Scatter(x=ondas, y=g, name='Canal G (530nm)', line=dict(color='#00ff66', width=2)))
-        fig.add_trace(go.Scatter(x=ondas, y=b, name='Canal B (450nm)', line=dict(color='#00f0ff', width=2)))
-        fig.update_layout(
-            title='Espectro Óptico Capturado',
-            xaxis_title='Longitud de Onda (nm)',
-            yaxis_title='Intensidad Relativa',
-            paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(22,27,34,0.9)',
-            font=dict(color='#c9d1d9'),
-            height=300,
-            margin=dict(l=20, r=20, t=40, b=20)
-        )
+        r = linea[:, 0].astype(float) / 255.0
+        g = linea[:, 1].astype(float) / 255.0
+        b = linea[:, 2].astype(float) / 255.0
+        
+        df_espectro = pd.DataFrame({
+            'Longitud de Onda (nm)': np.linspace(400, 700, ancho),
+            'Canal R (Rojo)': r,
+            'Canal G (Verde)': g,
+            'Canal B (Azul)': b
+        }).set_index('Longitud de Onda (nm)')
 
         with col_c2:
             st.markdown('<div class="cyber-card"><h3>📊 Diagnóstico Espectral en Vivo</h3>', unsafe_allow_html=True)
@@ -80,7 +64,8 @@ if modo_app == "📸 Visión de Campo (Espectral)":
             st.markdown("- **ID Muestra:** `AC-2401-OPT`\n- **Claridad Óptima:** Estimada (98.4%)\n- **Estado:** `PRE-APTO (Requiere prueba física)`")
             st.markdown('</div>', unsafe_allow_html=True)
 
-        st.plotly_chart(fig, use_container_width=True)
+        st.markdown("### Perfil Espectroscópico Extraído (Intensidad Normalizada)")
+        st.line_chart(df_espectro, height=300)
 
 elif modo_app == "🎛️ Panel Analítico Completo":
     st.sidebar.header("Variables de Laboratorio")
@@ -150,4 +135,4 @@ else:
             <p><b>Datos Bancarios:</b> Provincial / Venezuela | C.I./RIF: 7128648</p>
         </div>
     """, unsafe_allow_html=True)
-        
+    
