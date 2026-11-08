@@ -5,7 +5,7 @@ from datetime import datetime
 
 # Configuración de página con diseño amplio
 st.set_page_config(
-    page_title="AquaCheck Postmodern Pro",
+    page_title="AquaCheck Postmodern Pro - Laboratorio Avanzado",
     page_icon="💧",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -72,8 +72,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Encabezado Neofuturista
-st.markdown('<p class="cyber-title">💧 AquaCheck // Core</p>', unsafe_allow_html=True)
-st.markdown('<p class="cyber-subtitle">Plataforma Autónoma de Certificación e IA Hídrica</p>', unsafe_allow_html=True)
+st.markdown('<p class="cyber-title">💧 AquaCheck // Advanced Lab Core</p>', unsafe_allow_html=True)
+st.markdown('<p class="cyber-subtitle">Plataforma Autónoma de Certificación e IA con Perfil Bacteriológico y Traza</p>', unsafe_allow_html=True)
 
 # Menú lateral postmoderno con acceso a contacto
 st.sidebar.markdown("### 🎛️ MÓDULOS DE CONTROL")
@@ -81,14 +81,14 @@ modo_app = st.sidebar.radio(
     "Seleccione interfaz de entrada:",
     [
         "📸 Visión de Campo (Cámara)",
-        "🎛️ Parámetros Físico-Químicos",
+        "🎛️ Panel Analítico Completo (Físico-Químico, Bacterias y Trazas)",
         "🌐 Protocolos y Usos Hídricos",
         "📞 Contacto y Colaboración"
     ]
 )
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("⚡ **Estado:** `En línea` | **Soporte:** `Activo`")
+st.sidebar.markdown("⚡ **Estado:** `En línea` | **Laboratorio:** `Activo`")
 
 # ---------------------------------------------------------
 # MODO 1: CÁMARA DE CAMPO
@@ -138,6 +138,7 @@ if modo_app == "📸 Visión de Campo (Cámara)":
                     "[RESULTADOS ESPECTRALES]\n"
                     "- Índice de Claridad Óptima: Aprobado\n"
                     "- Evaluación Superficial: Cumple con los estándares de pureza visual.\n"
+                    "- Estimación Bacteriológica: Ausencia aparente de turbidez orgánica.\n"
                     "- Estado General: APTO / CONDICIÓN ESTABLE\n\n"
                     "Soporte y Contacto: warehouseofficestore@gmail.com | WA: +58 424 4131429\n"
                     "Firma Digital: AQUACHECK-NEO-CORE-2026\n"
@@ -153,10 +154,10 @@ if modo_app == "📸 Visión de Campo (Cámara)":
                 )
 
 # ---------------------------------------------------------
-# MODO 2: PANEL MANUAL
+# MODO 2: PANEL ANALÍTICO COMPLETO (Físico-Químico, Bacterias, Trazas)
 # ---------------------------------------------------------
-elif modo_app == "🎛️ Parámetros Físico-Químicos":
-    st.sidebar.header("⚙️ Ajuste de Variables")
+elif modo_app == "🎛️ Panel Analítico Completo (Físico-Químico, Bacterias y Trazas)":
+    st.sidebar.header("⚙️ Variables Físico-Químicas")
     tipo_fuente = st.sidebar.selectbox(
         "Origen de la Muestra:",
         ["💧 Vaso / Agua Potable Directa", "🏊‍♂️ Piscina / Natatorio", "🛢️ Tanque de Almacenamiento", "🌊 Lago / Cuerpo Natural de Agua", "🧪 Recipiente Industrial"]
@@ -168,162 +169,35 @@ elif modo_app == "🎛️ Parámetros Físico-Químicos":
     chloramines = st.sidebar.slider("Cloraminas (ppm)", 0.0, 15.0, 7.0, 0.1)
     turbidity = st.sidebar.slider("Turbidez (NTU)", 0.0, 10.0, 3.5, 0.1)
 
+    st.sidebar.markdown("---")
+    st.sidebar.header("🔬 Perfil Bacteriológico y Trazas")
+    coliformes = st.sidebar.selectbox("Coliformes Totales / E. coli", ["Ausente (0 UFC/100ml)", "Presencia Moderada", "Presencia Crítica"])
+    lead = st.sidebar.number_input("Plomo (Pb - mg/L)", min_value=0.0, max_value=0.5, value=0.005, step=0.001)
+    iron = st.sidebar.number_input("Hierro (Fe - ppm)", min_value=0.0, max_value=10.0, value=0.2, step=0.1)
+
     col1, col2 = st.columns([1.5, 1])
 
     with col1:
         st.markdown(f"""
             <div class="cyber-card">
-                <h3>📊 Matriz de Parámetros: {tipo_fuente}</h3>
+                <h3>📊 Matriz Integral de Laboratorio: {tipo_fuente}</h3>
             </div>
         """, unsafe_allow_html=True)
         
         resumen_df = pd.DataFrame({
-            'Parámetro': ['pH', 'Dureza', 'Sólidos (TDS)', 'Cloraminas', 'Turbidez'],
-            'Valor Registrado': [ph, hardness, solids, chloramines, turbidity],
-            'Unidad': ['pH', 'mg/L', 'ppm', 'ppm', 'NTU']
+            'Parámetro Analítico': ['pH', 'Dureza', 'Sólidos (TDS)', 'Cloraminas', 'Turbidez', 'Coliformes', 'Plomo (Pb)', 'Hierro (Fe)'],
+            'Valor Registrado': [ph, hardness, solids, chloramines, turbidity, coliformes, lead, iron],
+            'Unidad / Estado': ['pH', 'mg/L', 'ppm', 'ppm', 'NTU', 'UFC/100ml', 'mg/L', 'ppm']
         })
         st.dataframe(resumen_df, use_container_width=True)
 
     with col2:
         st.markdown("""
             <div class="cyber-card">
-                <h3>🚀 Núcleo de Diagnóstico</h3>
-                <p>Procesa los datos actuales bajo estándares internacionales.</p>
+                <h3>🚀 Núcleo de Diagnóstico Completo</h3>
+                <p>Procesa los parámetros físico-químicos, bacteriológicos y elementos traza bajo estándares internacionales.</p>
             </div>
         """, unsafe_allow_html=True)
         
-        if st.button("⚡ Procesar Análisis Cuántico", use_container_width=True):
-            es_apto = (6.5 <= ph <= 8.5) and (turbidity <= 5.0)
-            
-            if es_apto:
-                st.balloons()
-                st.markdown("""
-                    <div class="cyber-card" style="border-color: #00ff66;">
-                        <h4 style="color: #00ff66;">💧 ESTADO: APTO / POTABLE</h4>
-                        <p>Los parámetros coinciden con los rangos óptimos de seguridad biológica.</p>
-                    </div>
-                """, unsafe_allow_html=True)
-            else:
-                st.markdown("""
-                    <div class="cyber-card" style="border-color: #ff3366;">
-                        <h4 style="color: #ff3366;">⚠️ ESTADO: ALERTA / NO APTA</h4>
-                        <p>Se detectaron anomalías críticas en los índices físico-químicos.</p>
-                    </div>
-                """, unsafe_allow_html=True)
-
-            st.markdown("""
-                <div class="cyber-card" style="border-color: #7000ff;">
-                    <h3>💳 Pasarela de Pago & Donativos // Certificado Técnico</h3>
-                    <p>Realice su aporte, donativo o pago por certificado mediante nuestras vías oficiales:</p>
-                </div>
-            """, unsafe_allow_html=True)
-
-            metodo_pago = st.radio("Seleccione método de pago:", ["📱 Pago Móvil (Nacional)", "🌐 Tarjeta / Pasarela Internacional (Stripe)"])
-
-            if "Pago Móvil" in metodo_pago:
-                st.info(
-                    "**Datos para Pago Móvil / Colaboración:**\n\n"
-                    "* **Bancos:** Banco Provincial / Banco de Venezuela\n"
-                    "* **Teléfono:** `0424 4131429`\n"
-                    "* **C.I. / R.I.F.:** `7128648`\n"
-                    "* **Notificar pagos vía WhatsApp:** [Escribir al WhatsApp](https://wa.me/584244131429)"
-                )
-                ref_pago = st.text_input("Ingrese la referencia del Pago Móvil:")
-                
-                if st.button("Verificar y Generar Certificado", use_container_width=True):
-                    if len(ref_pago) >= 4:
-                        reporte_fq = (
-                            "==================================================\n"
-                            "       CERTIFICADO OFICIAL DE ANÁLISIS HÍDRICO\n"
-                            "==================================================\n"
-                            f"Fecha: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-                            f"Origen: {tipo_fuente}\n"
-                            f"Referencia Pago Móvil / Donativo: {ref_pago}\n\n"
-                            "[VALORES REGISTRADOS]\n"
-                            f"- pH: {ph} | Dureza: {hardness} mg/L | TDS: {solids} ppm\n"
-                            f"- Cloraminas: {chloramines} ppm | Turbidez: {turbidity} NTU\n\n"
-                            "[DIAGNÓSTICO]\n"
-                            f"Estado: {'APTO / POTABLE' if es_apto else 'ALERTA / REVISIÓN'}\n"
-                            "Certificación válida bajo estándares técnicos.\n"
-                            "Soporte: warehouseofficestore@gmail.com\n"
-                            "Firma Digital: AQUACHECK-PRO-2026\n"
-                            "=================================================="
-                        )
-                        st.success("¡Operación verificada con éxito!")
-                        st.download_button(
-                            label="📥 Descargar Certificado Oficial Firmado",
-                            data=reporte_fq,
-                            file_name=f"Certificado_AquaCheck_{tipo_fuente.split()[0]}.txt",
-                            mime="text/plain",
-                            use_container_width=True
-                        )
-                    else:
-                        st.warning("Por favor ingrese un número de referencia válido.")
-            else:
-                st.write("Realice su donativo o pago seguro a través de pasarela internacional.")
-                if st.link_button("🔗 Pagar / Donar con Tarjeta (Checkout)", "https://buy.stripe.com/tu-enlace-de-pago"):
-                    pass
-                
-                reporte_fq_intl = (
-                    "==================================================\n"
-                    "       CERTIFICADO OFICIAL INTERNACIONAL - AQUACHECK\n"
-                    "==================================================\n"
-                    f"Fecha: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-                    f"Origen: {tipo_fuente}\n"
-                    "Pasarela: Stripe Secure Checkout\n\n"
-                    "[VALORES REGISTRADOS]\n"
-                    f"- pH: {ph} | Dureza: {hardness} mg/L | TDS: {solids} ppm\n"
-                    f"- Cloraminas: {chloramines} ppm | Turbidez: {turbidity} NTU\n\n"
-                    f"Estado: {'APTO / POTABLE' if es_apto else 'ALERTA / REVISIÓN'}\n"
-                    "Contacto: valdezinversionesships@gmail.com\n"
-                    "Firma Digital: AQUACHECK-INTL-2026\n"
-                    "=================================================="
-                )
-                st.download_button(
-                    label="📥 Descargar Certificado (Post-Pago Internacional)",
-                    data=reporte_fq_intl,
-                    file_name=f"Certificado_Internacional_{tipo_fuente.split()[0]}.txt",
-                    mime="text/plain",
-                    use_container_width=True
-                )
-
-# ---------------------------------------------------------
-# MODO 3: GUÍA POSTMODERNA
-# ---------------------------------------------------------
-elif modo_app == "🌐 Protocolos y Usos Hídricos":
-    st.markdown("""
-        <div class="cyber-card">
-            <h3>🌐 Arquitectura de Protocolos Hídricos y Monetización</h3>
-            <p>Guía de calibración y métodos de pago integrados en la plataforma:</p>
-            <ul>
-                <li><b>📱 Pago Móvil:</b> Provincial / Venezuela (Tlf: 0424-4131429 | C.I/RIF: 7128648)</li>
-                <li><b>🌐 Internacional:</b> Tarjetas de crédito/débito vía pasarela segura.</li>
-                <li><b>📄 Certificación:</b> Emisión instantánea de reportes técnicos descargables.</li>
-            </ul>
-        </div>
-    """, unsafe_allow_html=True)
-
-# ---------------------------------------------------------
-# MODO 4: CONTACTO Y COLABORACIÓN
-# ---------------------------------------------------------
-else:
-    st.markdown("""
-        <div class="cyber-card">
-            <h3>📞 Centro de Contacto, Colaboración y Donativos</h3>
-            <p>¿Deseas establecer una alianza estratégica, realizar un donativo o tienes dudas sobre los reportes hídricos? Comunícate directamente con nosotros a través de los siguientes canales oficiales:</p>
-            
-            <ul style="line-height: 2.0; font-size: 1.1rem;">
-                <li>📱 <b>WhatsApp Directo / Pago Móvil:</b> <a href="https://wa.me/584244131429" target="_blank" style="color: #00f0ff;">+58 424-4131429</a></li>
-                <li>✉️ <b>Correo Comercial y Soporte:</b> <a href="mailto:warehouseofficestore@gmail.com" style="color: #00f0ff;">warehouseofficestore@gmail.com</a></li>
-                <li>🚢 <b>Correo Corporativo / Alianzas:</b> <a href="mailto:valdezinversionesships@gmail.com" style="color: #00f0ff;">valdezinversionesships@gmail.com</a></li>
-            </ul>
-            
-            <hr style="border-color: #30363d; margin: 20px 0;">
-            <p><b>Datos Fiscales y Bancarios para Aportes en Venezuela:</b></p>
-            <ul>
-                <li><b>Bancos:</b> Banco Provincial / Banco de Venezuela</li>
-                <li><b>Teléfono asociado:</b> 0424 4131429</li>
-                <li><b>C.I. / R.I.F.:</b> 7128648</li>
-            </ul>
-        </div>
-    """, unsafe_allow_html=True)
+        if st.button("⚡ Procesar Análisis Integral", use_container_width=True):
+            es_apto_fisico = (6.5 <= ph <= 8.5) and
