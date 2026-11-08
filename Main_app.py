@@ -110,10 +110,7 @@ if modo_app == "📸 Visión de Campo (Cámara)":
         
     with col_cam2:
         st.markdown("<div class='cyber-card'>", unsafe_allow_html=True)
-        tipo_fuente_cam = st.selectbox(
-            "Seleccionar Contexto de Muestra:",
-            ["💧 Vaso / Agua Potable", "🏊‍♂️ Piscina / Natatorio", "🛢️ Tanque de Almacenamiento", "🌊 Lago / Ecosistema Natural", "🧪 Contenedor Industrial"]
-        )
+        tipo_fuente_cam = st.selectbox("Seleccionar Contexto de Muestra:", ["💧 Vaso / Agua Potable", "🏊‍♂️ Piscina / Natatorio", "🛢️ Tanque de Almacenamiento", "🌊 Lago / Ecosistema Natural", "🧪 Contenedor Industrial"])
         st.info(f"Contexto activo: **{tipo_fuente_cam}**")
         st.markdown("</div>", unsafe_allow_html=True)
         
@@ -158,10 +155,16 @@ if modo_app == "📸 Visión de Campo (Cámara)":
 # ---------------------------------------------------------
 elif modo_app == "🎛️ Panel Analítico Completo (Físico-Químico, Bacterias y Trazas)":
     st.sidebar.header("⚙️ Variables Físico-Químicas")
-    tipo_fuente = st.sidebar.selectbox(
-        "Origen de la Muestra:",
-        ["💧 Vaso / Agua Potable Directa", "🏊‍♂️ Piscina / Natatorio", "🛢️ Tanque de Almacenamiento", "🌊 Lago / Cuerpo Natural de Agua", "🧪 Recipiente Industrial"]
-    )
+    tipo_fuente = st.sidebar.selectbox("Origen de la Muestra:", ["💧 Vaso / Agua Potable Directa", "🏊‍♂️ Piscina / Natatorio", "🛢️ Tanque de Almacenamiento", "🌊 Lago / Cuerpo Natural de Agua", "🧪 Recipiente Industrial"])
     
     ph = st.sidebar.slider("Nivel de pH", 0.0, 14.0, 7.2, 0.1)
-    hardness = st.sidebar.number_input("Dureza del agua (mg/L)", min_value=0.0, max_value=500
+    hardness = st.sidebar.number_input("Dureza del agua (mg/L)", min_value=0.0, max_value=500.0, value=150.0)
+    solids = st.sidebar.number_input("Sólidos Totales Disueltos - TDS (ppm)", min_value=0.0, max_value=50000.0, value=20000.0)
+    chloramines = st.sidebar.slider("Cloraminas (ppm)", 0.0, 15.0, 7.0, 0.1)
+    turbidity = st.sidebar.slider("Turbidez (NTU)", 0.0, 10.0, 3.5, 0.1)
+
+    st.sidebar.markdown("---")
+    st.sidebar.header("🔬 Perfil Bacteriológico y Trazas")
+    coliformes = st.sidebar.selectbox("Coliformes Totales / E. coli", ["Ausente (0 UFC/100ml)", "Presencia Moderada", "Presencia Crítica"])
+    lead = st.sidebar.number_input("Plomo (Pb
+    
