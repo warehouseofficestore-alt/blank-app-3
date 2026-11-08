@@ -154,7 +154,7 @@ if modo_app == "📸 Visión de Campo (Cámara)":
                 )
 
 # ---------------------------------------------------------
-# MODO 2: PANEL ANALÍTICO COMPLETO (Físico-Químico, Bacterias, Trazas)
+# MODO 2: PANEL ANALÍTICO COMPLETO
 # ---------------------------------------------------------
 elif modo_app == "🎛️ Panel Analítico Completo (Físico-Químico, Bacterias y Trazas)":
     st.sidebar.header("⚙️ Variables Físico-Químicas")
@@ -164,40 +164,4 @@ elif modo_app == "🎛️ Panel Analítico Completo (Físico-Químico, Bacterias
     )
     
     ph = st.sidebar.slider("Nivel de pH", 0.0, 14.0, 7.2, 0.1)
-    hardness = st.sidebar.number_input("Dureza del agua (mg/L)", min_value=0.0, max_value=500.0, value=150.0)
-    solids = st.sidebar.number_input("Sólidos Totales Disueltos - TDS (ppm)", min_value=0.0, max_value=50000.0, value=20000.0)
-    chloramines = st.sidebar.slider("Cloraminas (ppm)", 0.0, 15.0, 7.0, 0.1)
-    turbidity = st.sidebar.slider("Turbidez (NTU)", 0.0, 10.0, 3.5, 0.1)
-
-    st.sidebar.markdown("---")
-    st.sidebar.header("🔬 Perfil Bacteriológico y Trazas")
-    coliformes = st.sidebar.selectbox("Coliformes Totales / E. coli", ["Ausente (0 UFC/100ml)", "Presencia Moderada", "Presencia Crítica"])
-    lead = st.sidebar.number_input("Plomo (Pb - mg/L)", min_value=0.0, max_value=0.5, value=0.005, step=0.001)
-    iron = st.sidebar.number_input("Hierro (Fe - ppm)", min_value=0.0, max_value=10.0, value=0.2, step=0.1)
-
-    col1, col2 = st.columns([1.5, 1])
-
-    with col1:
-        st.markdown(f"""
-            <div class="cyber-card">
-                <h3>📊 Matriz Integral de Laboratorio: {tipo_fuente}</h3>
-            </div>
-        """, unsafe_allow_html=True)
-        
-        resumen_df = pd.DataFrame({
-            'Parámetro Analítico': ['pH', 'Dureza', 'Sólidos (TDS)', 'Cloraminas', 'Turbidez', 'Coliformes', 'Plomo (Pb)', 'Hierro (Fe)'],
-            'Valor Registrado': [ph, hardness, solids, chloramines, turbidity, coliformes, lead, iron],
-            'Unidad / Estado': ['pH', 'mg/L', 'ppm', 'ppm', 'NTU', 'UFC/100ml', 'mg/L', 'ppm']
-        })
-        st.dataframe(resumen_df, use_container_width=True)
-
-    with col2:
-        st.markdown("""
-            <div class="cyber-card">
-                <h3>🚀 Núcleo de Diagnóstico Completo</h3>
-                <p>Procesa los parámetros físico-químicos, bacteriológicos y elementos traza bajo estándares internacionales.</p>
-            </div>
-        """, unsafe_allow_html=True)
-        
-        if st.button("⚡ Procesar Análisis Integral", use_container_width=True):
-            es_apto_fisico = (6.5 <= ph <= 8.5) and
+    hardness = st.sidebar.number_input("Dureza del agua (mg/L)", min_value=0.0, max_value=500
