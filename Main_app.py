@@ -1,9 +1,17 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import cv2
-import plotly.graph_objects as go
 from datetime import datetime
+from io import BytesIO
+from PIL import Image
+import plotly.graph_objects as go
+
+# Intento seguro de importar OpenCV
+try:
+    import cv2
+    CV2_AVAILABLE = True
+except ImportError:
+    CV2_AVAILABLE = False
 
 st.set_page_config(
     page_title="AquaCheck Pro - Laboratorio Avanzado",
@@ -43,12 +51,12 @@ if modo_app == "📸 Visión de Campo (Espectral)":
         foto = st.camera_input("Sensor Óptico de Campo")
         
     if foto:
-        file_bytes = np.asarray(bytearray(foto.read()), dtype=np.uint8)
-        imagen = cv2.imdecode(file_bytes, 1)
+        image_pil = Image.open(foto).convert('RGB')
+        img_array = np.array(image_pil)
         
-        alto, ancho, _ = imagen.shape
-        linea = imagen[alto//2, :, :]
-        r, g, b = linea[:, 2], linea[:, 1], linea[:, 0]
+        alto, ancho, _ = img_array.shape
+        linea = img_array[alto//2, :, :]
+        r, g, b = linea[:, 0], linea[:, 1], linea[:, 2]
         ondas = np.linspace(400, 700, ancho)
 
         fig = go.Figure()
@@ -142,4 +150,4 @@ else:
             <p><b>Datos Bancarios:</b> Provincial / Venezuela | C.I./RIF: 7128648</p>
         </div>
     """, unsafe_allow_html=True)
-            
+        
