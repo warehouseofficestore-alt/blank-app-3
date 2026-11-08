@@ -24,9 +24,15 @@ st.markdown("""
 st.markdown('<p class="cyber-title">💧 AquaCheck // Advanced Lab</p>', unsafe_allow_html=True)
 st.markdown('<p class="cyber-subtitle">Plataforma de Certificación Hídrica con Perfil Bacteriológico y Espectroscopia</p>', unsafe_allow_html=True)
 
-# Menú limpio sin exponer datos sensibles públicamente
-st.sidebar.markdown("### 🎛️ MÓDULOS")
-modo_app = st.sidebar.radio("Seleccionar:", ["📸 Visión de Campo (Espectral)", "🎛️ Panel Analítico Completo", "🌐 Protocolos", "📞 Contacto Corporativo"])
+# Menú de navegación actualizado con Centro de Control
+st.sidebar.markdown("### 🎛️ NÚCLEO OPERATIVO")
+modo_app = st.sidebar.radio("Seleccionar Módulo:", [
+    "🏠 Centro de Control (Inicio)", 
+    "📸 Visión de Campo (Espectral)", 
+    "🎛️ Panel Analítico Completo", 
+    "🌐 Protocolos Sanitarios", 
+    "📞 Contacto Corporativo"
+])
 
 st.sidebar.markdown("---")
 st.sidebar.markdown(
@@ -34,8 +40,42 @@ st.sidebar.markdown(
     unsafe_allow_html=True
 )
 
-if modo_app == "📸 Visión de Campo (Espectral)":
-    st.markdown('<div class="cyber-card"><h3>📷 Captura Espectral Hiperrealista</h3><p>Capture la muestra para generar el análisis óptico y la descomposición espectral en pantalla.</p></div>', unsafe_allow_html=True)
+# ---------------------------------------------------------
+# MÓDULO 0: CENTRO DE CONTROL / INICIO
+# ---------------------------------------------------------
+if modo_app == "🏠 Centro de Control (Inicio)":
+    st.markdown('<div class="cyber-card"><h3>🚀 Bienvenida al Sistema AquaCheck Pro</h3><p>Plataforma inteligente de certificación hídrica, análisis espectroscópico y control bacteriológico preliminar.</p></div>', unsafe_allow_html=True)
+    
+    with st.expander("📖 ¿Cuál es la utilidad de esta plataforma y cómo se opera?", expanded=True):
+        st.markdown("""
+        * **Propósito Principal:** Proveer una herramienta digital avanzada de pre-diagnóstico y estimación de pureza hídrica mediante visión computacional y modelado de parámetros físico-químicos.
+        * **Flujo Operativo General:**
+          1. **Navegación:** Utilice el menú lateral izquierdo para alternar entre los diferentes módulos de análisis y control.
+          2. **Captura Óptica:** Emplee el módulo de **Visión de Campo** para registrar muestras y descomponer su espectro cromático en vivo.
+          3. **Diagnóstico y Emisión:** Ingrese parámetros en el **Panel Analítico**, procese los resultados y complete la referencia de pago móvil para liberar automáticamente los archivos oficiales de certificación.
+        * **Garantía y Cumplimiento:** Todos los reportes emitidos incluyen avisos normativos estrictos que recuerdan la necesidad de validar los datos mediante ensayos físicos en laboratorios certificados.
+        """)
+
+    col_h1, col_h2 = st.columns(2)
+    with col_h1:
+        st.markdown('<div class="cyber-card"><h4>⚡ Características del Sistema</h4><p>• Extracción espectral RGB normalizada.<br>• Generación dinámica de certificados.<br>• Seguridad transaccional integrada.</p></div>', unsafe_allow_html=True)
+    with col_h2:
+        st.markdown('<div class="cyber-card"><h4>🛡️ Seguridad y Privacidad</h4><p>• Datos sensibles protegidos.<br>• Emisión de pagos bajo demanda.<br>• Trazabilidad de muestras (AC-2401).</p></div>', unsafe_allow_html=True)
+
+# ---------------------------------------------------------
+# MÓDULO 1: VISIÓN DE CAMPO (ESPECTRAL)
+# ---------------------------------------------------------
+elif modo_app == "📸 Visión de Campo (Espectral)":
+    st.markdown('<div class="cyber-card"><h3>📷 Captura Espectral Hiperrealista</h3><p>Registro óptico y descomposición cromática de muestras líquidas en tiempo real.</p></div>', unsafe_allow_html=True)
+    
+    with st.expander("📖 Guía de Operación: Módulo Espectral", expanded=False):
+        st.markdown("""
+        * **Utilidad:** Analizar ópticamente una muestra mediante la cámara del dispositivo para extraer perfiles de intensidad de luz en los canales Rojo, Verde y Azul (RGB), simulando un análisis espectroscópico preliminar.
+        * **Paso a Paso:**
+          1. Apunte la cámara del dispositivo hacia la muestra de agua con iluminación adecuada.
+          2. Haga clic en el botón **"Tome una foto"** del widget inferior.
+          3. El sistema procesará automáticamente la matriz de píxeles y generará la gráfica espectroscópica normalizada junto con el estado preliminar de claridad.
+        """)
     
     col_c1, col_c2 = st.columns([1, 1])
     with col_c1:
@@ -67,6 +107,9 @@ if modo_app == "📸 Visión de Campo (Espectral)":
         st.markdown("### Perfil Espectroscópico Extraído (Intensidad Normalizada)")
         st.line_chart(df_espectro, height=300)
 
+# ---------------------------------------------------------
+# MÓDULO 2: PANEL ANALÍTICO COMPLETO
+# ---------------------------------------------------------
 elif modo_app == "🎛️ Panel Analítico Completo":
     st.sidebar.header("Variables de Laboratorio")
     tipo_fuente = st.sidebar.selectbox("Origen", ["Agua Potable", "Piscina", "Tanque", "Industrial"])
@@ -77,20 +120,30 @@ elif modo_app == "🎛️ Panel Analítico Completo":
     coliformes = st.sidebar.selectbox("Coliformes", ["Ausente (0 UFC)", "Presente"])
     lead = st.sidebar.number_input("Plomo Pb (mg/L)", 0.0, 0.5, 0.005)
 
+    st.markdown('<div class="cyber-card"><h3>🎛️ Panel Integral de Parámetros Físico-Químicos</h3><p>Evaluación cruzada de variables sanitarias y emisión de certificados oficiales.</p></div>', unsafe_allow_html=True)
+    
+    with st.expander("📖 Guía de Operación: Panel Analítico", expanded=False):
+        st.markdown("""
+        * **Utilidad:** Consolidar los parámetros fisicoquímicos y microbiológicos medidos para calcular una estimación de conformidad con estándares de calidad de agua.
+        * **Paso a Paso:**
+          1. Configure los valores en la barra lateral (pH, dureza, TDS, turbidez, coliformes y plomo).
+          2. Haga clic en **"Procesar Análisis e Iniciar Emisión"**.
+          3. El sistema evaluará los rangos y desplegará de forma segura los datos bancarios y el monto del servicio ($15.00 USD).
+          4. Introduzca la referencia de su pago móvil para **liberar automáticamente** los botones de descarga de los archivos oficiales.
+        """)
+
     col1, col2 = st.columns([1.5, 1])
     with col1:
-        st.markdown(f'<div class="cyber-card"><h3>Matriz: {tipo_fuente}</h3></div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="cyber-card"><h3>Matriz Seleccionada: {tipo_fuente}</h3></div>', unsafe_allow_html=True)
         df = pd.DataFrame({'Parámetro': ['pH', 'Dureza', 'TDS', 'Turbidez', 'Coliformes', 'Plomo'], 'Valor': [ph, hardness, solids, turbidity, coliformes, lead]})
         st.dataframe(df, use_container_width=True)
 
     with col2:
         st.markdown('<div class="cyber-card"><h3>Diagnóstico Integral y Emisión</h3></div>', unsafe_allow_html=True)
         
-        # Botón para procesar el análisis inicial
         if st.button("Procesar Análisis e Iniciar Emisión"):
             st.session_state['analisis_procesado'] = True
 
-        # Los datos de pago, el monto y la referencia se despliegan únicamente en esta fase
         if st.session_state.get('analisis_procesado', False):
             valido = (6.5 <= ph <= 8.5) and (turbidity <= 5.0) and (coliformes == "Ausente (0 UFC)")
             if valido:
@@ -109,11 +162,9 @@ elif modo_app == "🎛️ Panel Analítico Completo":
             
             ref = st.text_input("Ingrese Referencia de Pago Móvil para Liberar el Archivo:")
             
-            # El archivo y los resultados se liberan y habilitan automáticamente al validar el pago
             if ref and len(ref) >= 4:
                 st.success("¡Pago validado correctamente! Archivos de resultados y certificado liberados.")
                 
-                # Generación del archivo TXT de resultado y certificado
                 rep = (
                     "==================================================\n"
                     "    CERTIFICADO DE PRE-DIAGNÓSTICO HÍDRICO\n"
@@ -131,7 +182,6 @@ elif modo_app == "🎛️ Panel Analítico Completo":
                     "=================================================="
                 )
                 
-                # Liberación automática de los botones de descarga
                 col_dl1, col_dl2 = st.columns(2)
                 with col_dl1:
                     st.download_button("📥 Descargar Certificado TXT", data=rep, file_name="Certificado_AquaCheck.txt", mime="text/plain")
@@ -140,21 +190,41 @@ elif modo_app == "🎛️ Panel Analítico Completo":
             else:
                 st.warning("Ingrese los datos de referencia de pago para habilitar la descarga de los archivos de resultado.")
 
-elif modo_app == "🌐 Protocolos":
+# ---------------------------------------------------------
+# MÓDULO 3: PROTOCOLOS SANITARIOS
+# ---------------------------------------------------------
+elif modo_app == "🌐 Protocolos Sanitarios":
+    st.markdown('<div class="cyber-card"><h3>🌐 Protocolos y Normativa Hídrica</h3><p>Guías técnicas de cumplimiento y marcos de referencia internacionales.</p></div>', unsafe_allow_html=True)
+    
+    with st.expander("📖 Guía de Utilidad: Protocolos", expanded=True):
+        st.markdown("""
+        * **Utilidad:** Informar al usuario sobre los estándares internacionales de potabilidad (OMS) y la obligatoriedad de respaldar las mediciones digitales con ensayos de laboratorio presenciales.
+        """)
+
     st.markdown("""
         <div class="cyber-card">
-            <h3>Protocolos Hídricos y Normativa</h3>
-            <p>Guía de cumplimiento y la importancia de contrastar los valores digitales con ensayos físico-químicos y microbiológicos presenciales en laboratorios certificados.</p>
+            <h4>Estándares de Referencia</h4>
+            <p>• <b>pH Óptimo:</b> Rango entre 6.5 y 8.5 según normativas de agua potable.<br>
+            • <b>Turbidez Máxima:</b> Menor a 5.0 NTU para garantizar claridad y efectividad de desinfección.<br>
+            • <b>Control Microbiológico:</b> Ausencia total (0 UFC) de coliformes totales y fecales en 100 ml de muestra.</p>
         </div>
     """, unsafe_allow_html=True)
 
+# ---------------------------------------------------------
+# MÓDULO 4: CONTACTO CORPORATIVO
+# ---------------------------------------------------------
 else:
+    st.markdown('<div class="cyber-card"><h3>📞 Canal de Contacto Corporativo</h3><p>Atención comercial, soporte técnico y alianzas estratégicas.</p></div>', unsafe_allow_html=True)
+    
+    with st.expander("📖 Guía de Utilidad: Contacto", expanded=True):
+        st.markdown("""
+        * **Utilidad:** Proveer canales directos de comunicación con los administradores y representantes de la plataforma para consultas técnicas o comerciales.
+        """)
+
     st.markdown("""
         <div class="cyber-card">
-            <h3>📞 Contacto Corporativo</h3>
-            <p><b>Correos:</b> warehouseofficestore@gmail.com | valdezinversionesships@gmail.com</p>
-            <p>Canal de atención comercial y soporte técnico especializado.</p>
+            <p><b>WhatsApp / Soporte:</b> +58 424 4131429</p>
+            <p><b>Correos Electrónicos:</b> warehouseofficestore@gmail.com | valdezinversionesships@gmail.com</p>
+            <p><b>Representación:</b> Valencia, Estado Carabobo, Venezuela.</p>
         </div>
     """, unsafe_allow_html=True)
-    
-        
