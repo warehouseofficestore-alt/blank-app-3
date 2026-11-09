@@ -166,21 +166,29 @@ elif modo_app == "🎛️ Panel Analítico Completo":
 
                 st.success("¡Pago validado correctamente! Archivos de resultados y certificado liberados.")
                 
-                rep = (
-                    "==================================================\n"
-                    "    CERTIFICADO DE PRE-DIAGNÓSTICO HÍDRICO\n"
-                    "==================================================\n"
-                    f"Fecha: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-                    f"Origen: {tipo_fuente}\n"
-                    f"Referencia Pago Móvil: {ref}\n"
-                    f"Monto Procesado: 15.00 USD\n\n"
-                    f"pH: {ph} | TDS: {solids} ppm | Turbidez: {turbidity} NTU\n"
-                    f"Estado Estimado: {'PRE-APTO (Sujeto a confirmación física)' if valido else 'ALERTA TÉCNICA'}\n\n"
-                    "[AVISO LEGAL OBLIGATORIO]\n"
-                    "Este reporte es una estimación digital y de pre-diagnóstico.\n"
-                    "Es estrictamente obligatorio realizar pruebas físicas de\n"
-                    "laboratorio para certificar la inocuidad real del agua.\n"
-                    "=================================================="
+                    rep = (
+        "====================================================\n"
+        "          CERTIFICADO DE PRE-DIAGNÓSTICO HÍDRICO      \n"
+        "====================================================\n"
+        f"Fecha: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+        f"Experiencia / Origen: {tipo_fuente}\n"
+        f"Referencia Pago Móvil: {ref}\n"
+        f"Monto Procesado: 9.99 USD\n\n"
+        "--- PARÁMETROS FISICOQUÍMICOS Y MICROBIOLÓGICOS ---\n"
+        f"• pH: {ph}\n"
+        f"• Dureza: {hardness} mg/L\n"
+        f"• TDS: {solids} ppm\n"
+        f"• Turbidez: {turbidity} NTU\n"
+        f"• Coliformes: {coliformes}\n"
+        f"• Plomo (Pb): {lead} mg/L\n\n"
+        f"Estado Estimado: {'PRE-APTO (Sujeto a confirmación física)' if valido else 'ALERTA TÉCNICA / REQUIERE REVISIÓN'}\n\n"
+        "[AVISO LEGAL OBLIGATORIO]\n"
+        "Este reporte es una estimación digital y de pre-diagnóstico.\n"
+        "Es estrictamente obligatorio realizar pruebas físicas de\n"
+        "laboratorio para certificar la inocuidad real del agua.\n"
+        "====================================================\n"
+                    )
+                
                 )
                 
                 col_dl1, col_dl2 = st.columns(2)
