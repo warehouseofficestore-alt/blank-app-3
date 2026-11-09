@@ -189,16 +189,7 @@ elif modo_app == "🎛️ Panel Analítico Completo":
                 "====================================================\n"
                     )
                 
-        f"Estado Estimado: {'PRE-APTO (Sujeto a confirmación física)' if valido else 'ALERTA TÉCNICA / REQUIERE REVISIÓN'}\n\n"
-        "[AVISO LEGAL OBLIGATORIO]\n"
-        "Este reporte es una estimación digital y de pre-diagnóstico.\n"
-        "Es estrictamente obligatorio realizar pruebas físicas de\n"
-        "laboratorio para certificar la inocuidad real del agua.\n"
-        "====================================================\n"
-        )
-                
-                )
-                
+        
                 col_dl1, col_dl2 = st.columns(2)
                 with col_dl1:
                     st.download_button("📥 Descargar Certificado TXT", data=rep, file_name="Certificado_AquaCheck.txt", mime="text/plain")
