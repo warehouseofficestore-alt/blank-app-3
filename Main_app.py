@@ -166,7 +166,7 @@ elif modo_app == "🎛️ Panel Analítico Completo":
 
                 st.success("¡Pago validado correctamente! Archivos de resultados y certificado liberados.")
                 
-                    rep = (
+                rep = (
 "====================================================\n"
 "          CERTIFICADO DE PRE-DIAGNÓSTICO HÍDRICO      \n"
 "====================================================\n"
