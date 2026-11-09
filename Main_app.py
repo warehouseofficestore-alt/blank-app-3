@@ -162,7 +162,8 @@ elif modo_app == "🎛️ Panel Analítico Completo":
             
             ref = st.text_input("Ingrese Referencia de Pago Móvil para Liberar el Archivo:")
             
-            if ref and len(ref) >= 4:
+            if ref and verificar_pago_gmail_real(ref.strip()):
+
                 st.success("¡Pago validado correctamente! Archivos de resultados y certificado liberados.")
                 
                 rep = (
