@@ -228,3 +228,101 @@ else:
             <p><b>Representación:</b> Valencia, Estado Carabobo, Venezuela.</p>
         </div>
     """, unsafe_allow_html=True)
+import imaplib
+import email
+
+def verificar_pago_gmail_real(referencia_usuario, monto_esperado=15.00):
+    """
+    Verifica de forma real en la bandeja de entrada de Gmail si la referencia existe.
+    """
+    try:
+        email_servidor = st.secrets["gmail"]["email_usuario"]
+        password_app = st.secrets["gmail"]["password_app"]
+        
+        mail = imaplib.IMAP4_SSL("imap.gmail.com")
+        mail.login(email_servidor, password_app)
+        mail.select("inbox")
+        
+        search_query = f'(BODY "{referencia_usuario}")'
+        status, messages = mail.search(None, search_query)
+        
+        if status != "OK":
+            mail.logout()
+            return False
+            
+        message_ids = messages[0].split()
+        if not message_ids:
+            mail.logout()
+            return False
+            
+        for msg_id in message_ids:
+            res, msg_data = mail.fetch(msg_id, "(RFC822)")
+            if res == "OK":
+                for response_part in msg_data:
+                    if isinstance(response_part, tuple):
+                        msg = email.message_from_bytes(response_part[1])
+                        body = ""
+                        if msg.is_multipart():
+                            for part in msg.walk():
+                                if part.get_content_type() == "text/plain":
+                                    body = part.get_payload(decode=True).decode(errors="ignore")
+                        else:
+                            body = msg.get_payload(decode=True).decode(errors="ignore")
+                        
+                        if referencia_usuario in body:
+                            mail.logout()
+                            return True
+                            
+        mail.logout()
+        return False
+    except Exception as e:
+        return False
+import imaplib
+import email
+
+def verificar_pago_gmail_real(referencia_usuario, monto_esperado=15.00):
+    """
+    Verifica de forma real en la bandeja de entrada de Gmail si la referencia existe.
+    """
+    try:
+        email_servidor = st.secrets["gmail"]["email_usuario"]
+        password_app = st.secrets["gmail"]["password_app"]
+        
+        mail = imaplib.IMAP4_SSL("imap.gmail.com")
+        mail.login(email_servidor, password_app)
+        mail.select("inbox")
+        
+        search_query = f'(BODY "{referencia_usuario}")'
+        status, messages = mail.search(None, search_query)
+        
+        if status != "OK":
+            mail.logout()
+            return False
+            
+        message_ids = messages[0].split()
+        if not message_ids:
+            mail.logout()
+            return False
+            
+        for msg_id in message_ids:
+            res, msg_data = mail.fetch(msg_id, "(RFC822)")
+            if res == "OK":
+                for response_part in msg_data:
+                    if isinstance(response_part, tuple):
+                        msg = email.message_from_bytes(response_part[1])
+                        body = ""
+                        if msg.is_multipart():
+                            for part in msg.walk():
+                                if part.get_content_type() == "text/plain":
+                                    body = part.get_payload(decode=True).decode(errors="ignore")
+                        else:
+                            body = msg.get_payload(decode=True).decode(errors="ignore")
+                        
+                        if referencia_usuario in body:
+                            mail.logout()
+                            return True
+                            
+        mail.logout()
+        return False
+    except Exception as e:
+        return False
