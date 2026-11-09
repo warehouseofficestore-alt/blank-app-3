@@ -195,7 +195,7 @@ elif modo_app == "🎛️ Panel Analítico Completo":
         "Es estrictamente obligatorio realizar pruebas físicas de\n"
         "laboratorio para certificar la inocuidad real del agua.\n"
         "====================================================\n"
-                    )
+        )
                 
                 )
                 
