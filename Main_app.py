@@ -1,142 +1,171 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-import time
 
-# Configuración de página con estética neofuturista
+# Configuración inicial de la página
 st.set_page_config(
     page_title="Experiencia // Advanced Lab",
     page_icon="💧",
     layout="wide"
 )
 
-# Estilos CSS Neofuturistas (Interfaz oscura, neones y minimalismo táctico)
+# Estilos CSS refinados: minimalistas, oscuros, relajantes y de alta gama
 st.markdown("""
     <style>
     .stApp {
-        background-color: #05070A;
+        background-color: #07090E;
         color: #E2E8F0;
         font-family: 'Inter', sans-serif;
     }
-    .neo-card {
-        background: rgba(13, 20, 32, 0.7);
-        border: 1px solid rgba(0, 243, 255, 0.2);
-        border-radius: 8px;
-        padding: 20px;
-        box-shadow: 0 0 15px rgba(0, 243, 255, 0.05);
-        margin-bottom: 20px;
-    }
-    .neo-header {
+    .main-title {
         color: #00F3FF;
         font-weight: 700;
-        letter-spacing: 1.5px;
+        letter-spacing: 2px;
         text-transform: uppercase;
-        border-bottom: 1px solid rgba(0, 243, 255, 0.3);
+        font-size: 1.8rem;
+        margin-bottom: 0px;
+    }
+    .sub-title {
+        color: #64748B;
+        font-family: monospace;
+        font-size: 0.85rem;
+        margin-bottom: 25px;
+    }
+    .content-card {
+        background: rgba(13, 19, 31, 0.6);
+        border: 1px solid rgba(0, 243, 255, 0.15);
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        margin-bottom: 20px;
+    }
+    .card-header {
+        color: #38BDF8;
+        font-weight: 600;
+        font-size: 1.1rem;
+        letter-spacing: 1px;
+        margin-bottom: 12px;
+        border-bottom: 1px solid rgba(56, 189, 248, 0.2);
         padding-bottom: 8px;
-        margin-bottom: 15px;
     }
-    .metric-hud {
-        background: #0B1118;
-        border-left: 3px solid #00F3FF;
-        padding: 10px 15px;
-        font-family: 'Courier New', monospace;
-    }
-    .secure-payment-box {
-        background: linear-gradient(135deg, #0B1118 0%, #121E2C 100%);
-        border: 1px solid #10B981;
-        border-radius: 8px;
-        padding: 20px;
-        margin-top: 25px;
-        box-shadow: 0 0 20px rgba(16, 185, 129, 0.1);
+    .info-text {
+        color: #94A3B8;
+        font-size: 0.95rem;
+        line-height: 1.6;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# Título y HUD Principal
-st.markdown("<h1 style='color: #00F3FF; font-weight: 800;'>EXPERIENCIA // NÚCLEO HÍDRICO</h1>", unsafe_allow_html=True)
-st.markdown("<p style='color: #8A99AD; font-family: monospace;'>MÓDULO DE CERTIFICACIÓN ESPECTRAL Y DIAGNÓSTICO HIPERREALISTA</p>", unsafe_allow_html=True)
-
-# Simulación de Estado de la Sesión
-if 'fase_certificado' not in st.session_state:
-    st.session_state.fase_certificado = False
-
-# Sidebar Neofuturista para Controles y Sensibilidad
+# --- NAVEGACIÓN LATERAL POR MÓDULOS ---
 with st.sidebar:
-    st.markdown("### ⚙️ HUD DE CALIBRACIÓN")
-    st.markdown("---")
-    ganancia_b = st.slider("Ganancia Canal B (Azul)", 0.5, 2.0, 1.0, 0.1)
-    ganancia_g = st.slider("Ganancia Canal G (Verde)", 0.5, 2.0, 1.0, 0.1)
-    ganancia_r = st.slider("Ganancia Canal R (Rojo)", 0.5, 2.0, 1.0, 0.1)
-    umbral_ruido = st.selectbox("Filtro de Dispersión (Noise Filter)", ["Estándar", "Ultra-Preciso (Lab)", "Modo Campo"])
+    st.markdown("<h3 style='color: #00F3FF; font-size: 1.1rem;'>NÚCLEO OPERATIVO</h3>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #64748B; font-size: 0.8rem;'>Seleccionar Módulo:</p>", unsafe_allow_html=True)
+    
+    modulo = st.radio(
+        "Navegación",
+        [
+            "Centro de Control (Inicio)",
+            "Visión de Campo (Espectral)",
+            "Panel Analítico Completo",
+            "Protocolos Sanitarios",
+            "Contacto Corporativo"
+        ],
+        label_visibility="collapsed"
+    )
     
     st.markdown("---")
-    if st.button("🚀 GENERAR CERTIFICADO OFICIAL", type="primary"):
-        st.session_state.fase_certificado = True
+    st.markdown("<p style='font-size: 0.75rem; color: #475569;'>Aviso Legal: Herramienta digital de pre-diagnóstico. Requiere validación física de laboratorio.</p>", unsafe_allow_html=True)
 
-# Contenedor Principal: Captura y Espectrograma
-col1, col2 = st.columns([1, 1.5])
+# --- CONTENIDO PRINCIPAL SEGÚN EL MÓDULO SELECCIONADO ---
 
-with col1:
-    st.markdown("<div class='neo-card'>", unsafe_allow_html=True)
-    st.markdown("<div class='neo-header'>📷 Sensor Óptico de Campo</div>", unsafe_allow_html=True)
+if modulo == "Centro de Control (Inicio)":
+    st.markdown("<div class='main-title'>EXPERIENCIA // CENTRO DE CONTROL</div>", unsafe_allow_html=True)
+    st.markdown("<div class='sub-title'>Plataforma de Certificación Hídrica con Perfil Bacteriológico y Espectroscopía</div>", unsafe_allow_html=True)
     
-    # Simulación de la entrada de cámara o captura
-    camera_input = st.camera_input("Capturar Muestra Líquida en Tiempo Real")
-    
-    if camera_input:
-        st.success("✔ Matriz óptica registrada con éxito.")
-    st.markdown("</div>", unsafe_allow_html=True)
-
-with col2:
-    st.markdown("<div class='neo-card'>", unsafe_allow_html=True)
-    st.markdown("<div class='neo-header'>📈 Descomposición Cromática Espectral</div>", unsafe_allow_html=True)
-    
-    # Generación de datos simulados para el gráfico neofuturista con los factores de ganancia
-    wavelengths = np.linspace(400, 700, 100)
-    canal_b = (np.sin(wavelengths / 25) * 0.1 + 0.15) * ganancia_b
-    canal_g = (np.sin(wavelengths / 28) * 0.12 + 0.13) * ganancia_g
-    canal_r = (np.cos(wavelengths / 30) * 0.08 + 0.07) * ganancia_r
-    
-    chart_data = pd.DataFrame({
-        'Longitud de Onda (nm)': wavelengths,
-        'Canal B (Azul)': canal_b,
-        'Canal G (Verde)': canal_g,
-        'Canal R (Rojo)': canal_r
-    }).set_index('Longitud de Onda (nm)')
-    
-    st.line_chart(chart_data, color=["#00F3FF", "#38BDF8", "#EF4444"])
-    st.markdown("</div>", unsafe_allow_html=True)
-
-# --- FASE DE EMISIÓN DE CERTIFICADO Y RESULTADOS ---
-if st.session_state.fase_certificado:
-    st.markdown("---")
-    st.markdown("<div class='neo-card' style='border-color: #10B981;'>", unsafe_allow_html=True)
-    st.markdown("<div class='neo-header' style='color: #10B981;'>🛡️ CERTIFICADO DE ANÁLISIS HÍDRICO EMITIDO</div>", unsafe_allow_html=True)
-    
-    col_res1, col_res2 = st.columns(2)
-    with col_res1:
+    col1, col2 = st.columns(2)
+    with col1:
         st.markdown("""
-        * **Código de Registro:** EXP-2026-VAL-9042
-        * **Clasificación Óptica:** Nivel 2 (Carga Moderada / Requiere Tratamiento Preventivo)
-        * **Índice de Pureza Estimado:** 88.4%
-        """)
-    with col_res2:
+        <div class='content-card'>
+            <div class='card-header'>🌐 Resumen del Sistema</div>
+            <p class='info-text'>Bienvenido al entorno de diagnóstico avanzado. Desde este núcleo operativo puede gestionar la captura óptica en tiempo real, visualizar los espectrogramas cromáticos descompuestos y emitir certificados analíticos de alta precisión.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    with col2:
         st.markdown("""
-        * **Recomendación de Uso:** Se sugiere filtración por ósmosis o desinfección UV previa al consumo humano directo.
-        * **Estado de Validación:** Aprobado para control de procesos industriales y riego tecnificado.
-        """)
+        <div class='content-card'>
+            <div class='card-header'>⚡ Estado de Módulos</div>
+            <p class='info-text'>• <strong>Sensor Óptico:</strong> En espera de calibración.<br>• <strong>Matriz Espectral:</strong> Activa y sincronizada.<br>• <strong>Emisión de Certificados:</strong> Protegida y cifrada.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+elif modulo == "Visión de Campo (Espectral)":
+    st.markdown("<div class='main-title'>VISIÓN DE CAMPO // MÓDULO ESPECTRAL</div>", unsafe_allow_html=True)
+    st.markdown("<div class='sub-title'>Registro óptico y descomposición cromática de muestras líquidas en tiempo real.</div>", unsafe_allow_html=True)
     
-    # DATOS BANCARIOS Y PAGO MÓVIL (DESPLEGADOS EXCLUSIVAMENTE EN ESTA FASE FINAL)
+    col_cam, col_graf = st.columns([1, 1.3])
+    
+    with col_cam:
+        st.markdown("<div class='content-card'>", unsafe_allow_html=True)
+        st.markdown("<div class='card-header'>📷 Sensor Óptico de Campo</div>", unsafe_allow_html=True)
+        st.markdown("<p class='info-text'>Alinee el dispositivo con la muestra líquida para capturar el perfil óptico.</p>", unsafe_allow_html=True)
+        camera_input = st.camera_input("Capturar Muestra", label_visibility="collapsed")
+        st.markdown("</div>", unsafe_allow_html=True)
+        
+    with col_graf:
+        st.markdown("<div class='content-card'>", unsafe_allow_html=True)
+        st.markdown("<div class='card-header'>📈 Espectrograma Cromático (RGB)</div>", unsafe_allow_html=True)
+        
+        # Generación limpia del gráfico sin solapamientos
+        wavelengths = np.linspace(400, 700, 90)
+        canal_b = np.sin(wavelengths / 25) * 0.1 + 0.15
+        canal_g = np.sin(wavelengths / 28) * 0.12 + 0.13
+        canal_r = np.cos(wavelengths / 30) * 0.08 + 0.07
+        
+        chart_data = pd.DataFrame({
+            'Longitud de Onda (nm)': wavelengths,
+            'Canal B (Azul)': canal_b,
+            'Canal G (Verde)': canal_g,
+            'Canal R (Rojo)': canal_r
+        }).set_index('Longitud de Onda (nm)')
+        
+        st.line_chart(chart_data, color=["#00F3FF", "#38BDF8", "#EF4444"])
+        st.markdown("</div>", unsafe_allow_html=True)
+
+elif modulo == "Panel Analítico Completo":
+    st.markdown("<div class='main-title'>PANEL ANALÍTICO COMPLETO</div>", unsafe_allow_html=True)
+    st.markdown("<div class='sub-title'>Consolidado de métricas fisicoquímicas y niveles de uso seguro.</div>", unsafe_allow_html=True)
+    
     st.markdown("""
-    <div class='secure-payment-box'>
-        <h4 style='color: #10B981; margin-top: 0;'>💳 Pasarela de Emisión y Pago Móvil (Autorizado)</h4>
-        <p style='font-size: 0.9rem; color: #94A3B8;'>Para descargar la certificación digital inalterable con firma criptográfica, utilice los siguientes canales de contraprestación autorizados:</p>
-        <ul style='font-family: monospace; font-size: 0.95rem; color: #E2E8F0;'>
-            <li><strong>Banco:</strong> (Banco Autorizado - Activo)</li>
-            <li><strong>Pago Móvil:</strong> Teléfono: 0414-XXXXXXX | V-XXXXXXXX</li>
-            <li><strong>Referencia Zelle / Transferencia:</strong> Disponible bajo solicitud cifrada</li>
-        </ul>
+    <div class='content-card'>
+        <div class='card-header'>📊 Indicadores de Pureza e Índice Espectral</div>
+        <p class='info-text'>Aquí se evalúan las desviaciones de las longitudes de onda para determinar la presencia de coloides o sólidos disueltos. El sistema clasifica automáticamente el agua en niveles de uso seguro (Apta, Requiere Tratamiento, o No Potable).</p>
     </div>
     """, unsafe_allow_html=True)
+
+elif modulo == "Protocolos Sanitarios":
+    st.markdown("<div class='main-title'>PROTOCOLOS SANITARIOS</div>", unsafe_allow_html=True)
+    st.markdown("<div class='sub-title'>Directrices normativas de desinfección y control bacteriológico.</div>", unsafe_allow_html=True)
     
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("""
+    <div class='content-card'>
+        <div class='card-header'>🛡️ Guía de Acciones Preventivas</div>
+        <p class='info-text'>Consulte los estándares de filtración por ósmosis inversa, sedimentación y desinfección por radiación ultravioleta recomendados según los resultados del diagnóstico espectral.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+elif modulo == "Contacto Corporativo":
+    st.markdown("<div class='main-title'>CONTACTO Y EMISIÓN CERTIFICADA</div>", unsafe_allow_html=True)
+    st.markdown("<div class='sub-title'>Soporte técnico y canales de contraprestación autorizados.</div>", unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class='content-card'>
+        <div class='card-header'>💳 Emisión de Certificado y Pasarela de Pago</div>
+        <p class='info-text'>Los datos bancarios y de pago móvil se despliegan exclusivamente en esta fase final de emisión de resultados para mantener la privacidad y orden de la plataforma.</p>
+        <hr style='border-color: rgba(255,255,255,0.1);'>
+        <p style='font-family: monospace; color: #38BDF8; font-size: 0.9rem;'>
+        • <strong>Banco Autorizado:</strong> Activo<br>
+        • <strong>Pago Móvil:</strong> 0414-XXXXXXX | V-XXXXXXXX<br>
+        • <strong>Soporte Técnico:</strong> soporte@experiencia-lab.com
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
