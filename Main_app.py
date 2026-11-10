@@ -154,7 +154,8 @@ elif modo_app == "🎛️ Panel Analítico Completo":
             st.markdown("---")
             st.markdown("#### 💳 Datos Bancarios, Monto y Pago Móvil")
             st.info(
-                "**Monto a Pagar / Donativo:** 15.00 USD (o su eq. en Bs. Tasa BCV)\n\n"
+                "**Monto a Pagar / Donativo:** 3.00 USD (o su equivalente en Bs)"
+                
                 "**Banco:** Provincial / Venezuela\n\n"
                 "**Teléfono:** 0424 4131429\n\n"
                 "**C.I./RIF:** 7128648"
