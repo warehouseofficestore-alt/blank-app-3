@@ -166,27 +166,27 @@ elif modo_app == "🎛️ Panel Analítico Completo":
 
                 st.success("¡Pago validado correctamente! Archivos de resultados y certificado liberados.")
                 
-                    rep = (
-        "====================================================\n"
-        "          CERTIFICADO DE PRE-DIAGNOSTICO HIDRICO      \n"
-        "====================================================\n"
-        f"Fecha: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-        f"Experiencia / Origen: {tipo_fuente}\n"
-        f"Referencia Pago Movil: {ref}\n"
-        f"Monto Procesado: 3.00 USD (o su equivalente en Bs)\n\n"
-        "--- PARAMETROS FISICOQUIMICOS Y MICROBIOLOGICOS ---\n"
-        f"• pH: {ph}\n"
-        f"• Dureza: {hardness} mg/L\n"
-        f"• TDS: {solids} ppm\n"
-        f"• Turbidez: {turbidity} NTU\n"
-        f"• Coliformes: {coliformes}\n"
-        f"• Plomo (Pb): {lead} mg/L\n\n"
-        f"Estado Estimado: {'PRE-APTO (Sujeto a confirmacion fisica)' if valido else 'ALERTA TECNICA / REQUIERE REVISION'}\n\n"
-        "[AVISO LEGAL OBLIGATORIO]\n"
-        "Este reporte es una estimacion digital y de pre-diagnostico.\n"
-        "Es estrictamente obligatorio realizar pruebas fisicas de\n"
-        "laboratorio para certificar la inocuidad real del agua.\n"
-        "====================================================\n"
+                rep = (
+                    "====================================================\n"
+                    "          CERTIFICADO DE PRE-DIAGNOSTICO HIDRICO      \n"
+                    "====================================================\n"
+                    f"Fecha: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+                    f"Experiencia / Origen: {tipo_fuente}\n"
+                    f"Referencia Pago Movil: {ref}\n"
+                    f"Monto Procesado: 3.00 USD (o su equivalente en Bs)\n\n"
+                    "--- PARAMETROS FISICOQUIMICOS Y MICROBIOLOGICOS ---\n"
+                    f"• pH: {ph}\n"
+                    f"• Dureza: {hardness} mg/L\n"
+                    f"• TDS: {solids} ppm\n"
+                    f"• Turbidez: {turbidity} NTU\n"
+                    f"• Coliformes: {coliformes}\n"
+                    f"• Plomo (Pb): {lead} mg/L\n\n"
+                    f"Estado Estimado: {'PRE-APTO (Sujeto a confirmacion fisica)' if valido else 'ALERTA TECNICA / REQUIERE REVISION'}\n\n"
+                    "[AVISO LEGAL OBLIGATORIO]\n"
+                    "Este reporte es una estimacion digital y de pre-diagnostico.\n"
+                    "Es estrictamente obligatorio realizar pruebas fisicas de\n"
+                    "laboratorio para certificar la inocuidad real del agua.\n"
+                "====================================================\n"
                     )
                 
                 
