@@ -340,7 +340,7 @@ def verificar_pago_gmail_real(referencia_usuario, monto_esperado=15.00):
 # ==========================================
 # MÓDULO SEGURO: CERTIFICACIÓN Y PAGOS
 # ==========================================
-elif modo_app == "💳 Certificación y Pagos":
+if modo_app == "💳 Certificación y Pagos":
     st.markdown("<div class='cyber-card'><h3>💳 Pasarela de Pagos y Certificación Hídrica</h3></div>", unsafe_allow_html=True)
     
     # Inicializar estado de pago en la sesión si no existe
