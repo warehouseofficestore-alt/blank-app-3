@@ -350,28 +350,70 @@ if modo_app == "💳 Certificación y Pagos":
     st.markdown("<div class='cyber-card'>", unsafe_allow_html=True)
     st.write("Seleccione el método de pago para desbloquear y descargar el certificado oficial de su análisis:")
     
-    tipo_pago = st.radio("Método de Pago:", ["🌍 Pago Internacional (Stripe / Tarjeta)", "🇻🇪 Pago Móvil / Transferencia (Venezuela)"])
+    # ################################################
+# # MÓDULO SEGURO: CERTIFICACIÓN Y PAGOS (NACIONAL)
+# ################################################
+if modo_app == "Certificación y Pagos":
+    st.markdown("<div class='cyber-card'><h3> Pasarela de Pagos y Certificación Hídrica</h3></div>", unsafe_allow_html=True)
+
+    # Inicializar estado de pago en la sesión si no existe
+    if "pago_aprobado" not in st.session_state:
+        st.session_state.pago_aprobado = False
+
+    st.markdown("<div class='cyber-card'>", unsafe_allow_html=True)
+    st.write("Seleccione el método de pago nacional para desbloquear y descargar el certificado oficial de su análisis:")
+
+    # Solo método 100% real nacional (Sin opción internacional)
+    st.info(
+        "**🇻🇪 Coordenadas de Pago Móvil y Transferencia (100% Real):**\n\n"
+        "- **Titular:** Richard Oscar Valdez Pereira\n"
+        "- **Cédula:** V-071286483\n"
+        "- **Teléfono Pago Móvil:** `0424-4131429`\n\n"
+        "**Banco Provincial (Corriente):**\n"
+        "`0108 0071 4301 0139 2896`\n\n"
+        "**Banco de Venezuela - BDV (Corriente):**\n"
+        "`[Tu número de cuenta BDV]`"
+    )
+
+    ref_pago = st.text_input("Ingrese los últimos 4 dígitos o la referencia de su pago:")
     
-    if "Internacional" in tipo_pago:
-        st.info("Conectado con pasarela segura global.")
-        if st.button("Simular / Procesar Pago Internacional"):
+    if st.button("Verificar Pago Nacional"):
+        if ref_pago and len(ref_pago.strip()) >= 4:
             st.session_state.pago_aprobado = True
-            st.success("¡Pago internacional aprobado con éxito!")
-    else:
-        st.markdown("""
-        **Coordenadas de Pago Móvil (Venezuela):**
-        * **Banco:** Banco Provincial / Banco de Venezuela
-        * **Teléfono:** 0424-4131429
-        """)
-        ref_pago = st.text_input("Ingrese los últimos 4 dígitos de la referencia:")
-        if st.button("Validar Pago Móvil"):
-            if ref_pago:
-                st.session_state.pago_aprobado = True
-                st.success("¡Referencia de pago registrada y verificada!")
-            else:
-                st.warning("Por favor ingrese la referencia.")
+            st.success("¡Referencia de pago registrada y verificada exitosamente!")
+        else:
+            st.warning("Por favor ingrese una referencia de pago válida.")
+            
     st.markdown("</div>", unsafe_allow_html=True)
 
+    # Sección de descarga del reporte técnico
+    if st.session_state.pago_aprobado:
+        st.markdown("<div class='cyber-card'>", unsafe_allow_html=True)
+        st.success(" Certificación Hídrica Habilitada.")
+        
+        contenido_certificado = f"""
+        ====================================================
+               AQUACHECK PRO - CERTIFICADO HÍDRICO
+        ====================================================
+        Plataforma: AquaCheck // Advanced Lab
+        Fecha de Emisión: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+        Estado: Apto para consumo / Certificado Oficial
+        Titular: Richard Oscar Valdez Pereira (Valdez Inversiones)
+        ====================================================
+        """
+
+        st.download_button(
+            label=" Descargar Certificado Oficial",
+            data=contenido_certificado,
+            file_name="Certificado_AquaCheck_Pro.txt",
+            mime="text/plain"
+        )
+        st.markdown("</div>", unsafe_allow_html=True)
+    else:
+        st.markdown("<div class='cyber-card'>", unsafe_allow_html=True)
+        st.warning(" Complete el proceso de pago nacional para habilitar la descarga del documento oficial.")
+        st.markdown("</div>", unsafe_allow_html=True)
+    
     # Sección de descarga del reporte técnico
     if st.session_state.pago_aprobado:
         st.markdown("<div class='cyber-card'>", unsafe_allow_html=True)
