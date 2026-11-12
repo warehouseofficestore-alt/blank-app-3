@@ -338,7 +338,48 @@ def verificar_pago_gmail_real(referencia_usuario, monto_esperado=15.00):
     except Exception as e:
         return False
 # ==========================================
-# MÓDULO SEGURO: CERTIFICACIÓN Y PAGOS
+# MÓDULO SEGURO: CERTIFICACIÓN Y PAGOS CON GMAIL
+import imaplib
+import email
+
+def verificar_pago_gmail_real(referencia_usuario, monto_esperado=3.00):
+    """
+    Conecta a la bandeja de entrada vía IMAP para verificar 
+    si llegó un correo de confirmación con la referencia bancaria.
+    """
+    try:
+        # Configura aquí tu correo y contraseña de aplicación de Gmail
+        # (Se recomienda usar variables de entorno o st.secrets en producción)
+        mail_user = st.secrets.get("GMAIL_USER", "tu_correo@gmail.com")
+        mail_pass = st.secrets.get("GMAIL_APP_PASSWORD", "tu_password_de_aplicacion")
+        
+        # Conexión segura con Gmail IMAP
+        mail = imaplib.IMAP4_SSL("imap.gmail.com")
+        mail.login(mail_user, mail_pass)
+        mail.select("inbox")
+
+        # Buscar correos que contengan la referencia ingresada
+        search_query = f'(BODY "{referencia_usuario}")'
+        status, messages = mail.search(None, search_query)
+
+        if status != "OK":
+            mail.logout()
+            return False
+
+        message_ids = messages[0].split()
+        if not message_ids:
+            mail.logout()
+            return False
+
+        # Si encuentra al menos un correo con esa referencia, valida como exitoso
+        mail.logout()
+        return True
+
+    except Exception as e:
+        # Si ocurre algún error de conexión, se maneja de forma segura
+        return False
+
+
 if modo_app == "Certificación y Pagos":
     st.markdown("<div class='cyber-card'><h3> Pasarela de Pagos y Certificación Hídrica</h3></div>", unsafe_allow_html=True)
 
@@ -365,7 +406,7 @@ if modo_app == "Certificación y Pagos":
         
         if st.button("Verificar Pago Nacional"):
             if ref_pago and len(ref_pago.strip()) >= 4:
-                with st.spinner("Verificando transacción en los registros..."):
+                with st.spinner("Consultando registros de pago en Gmail..."):
                     pago_valido = verificar_pago_gmail_real(ref_pago.strip(), monto_esperado=3.00)
                 
                 if pago_valido:
@@ -373,9 +414,9 @@ if modo_app == "Certificación y Pagos":
                     st.success("¡Pago verificado exitosamente en el sistema!")
                     st.rerun()
                 else:
-                    st.warning("No se encontró una confirmación automática para esta referencia. Verifique el número e intente de nuevo.")
+                    st.warning("No se encontró una confirmación automática para esta referencia en el correo. Verifique el número e intente de nuevo.")
             else:
-                st.warning("Por favor ingrese una referencia de pago válida.")
+                st.warning("Por favor ingrese una referencia de pago válida (mínimo 4 dígitos).")
                 
         st.markdown("</div>", unsafe_allow_html=True)
     else:
@@ -399,4 +440,5 @@ Estado: Apto para consumo / Certificado Oficial
             mime="text/plain"
         )
         st.markdown("</div>", unsafe_allow_html=True)
+                
         
