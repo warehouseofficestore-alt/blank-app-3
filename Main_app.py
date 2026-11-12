@@ -371,8 +371,8 @@ if modo_app == "Certificación y Pagos":
             else:
                 st.warning("Por favor ingrese una referencia de pago válida.")
                 
-        st.markdown("</div>", unsafe_allow_html=True)
-    else:
+        st.markdown("</div>", unsafe_allow_html=True )
+                else:
         st.markdown("<div class='cyber-card'>", unsafe_allow_html=True)
         st.success("¡Certificación Hídrica Habilitada y Pago Verificado!")
 
@@ -386,11 +386,13 @@ Cédula: V 7.128.648
 Estado: Apto para consumo / Certificado Oficial
 ============================================================"""
 
-                st.download_button(
+        st.download_button(
             label="📥 Descargar Certificado Oficial",
             data=contenido_certificado,
             file_name="Certificado_AquaCheck_Pro.txt",
             mime="text/plain"
         )
         st.markdown("</div>", unsafe_allow_html=True)
+    
+         
         
