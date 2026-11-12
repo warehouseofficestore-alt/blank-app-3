@@ -389,4 +389,4 @@ Estado: Apto para consumo / Certificado Oficial
             mime="text/plain"
         )
         st.markdown("</div>", unsafe_allow_html=True)
-        
+            
