@@ -394,20 +394,6 @@ Estado: Apto para consumo / Certificado Oficial
         )
         st.markdown("</div>", unsafe_allow_html=True)
         
-    else:
-        st.markdown("<div class='cyber-card'>", unsafe_allow_html=True)
-        st.success("¡Certificación Hídrica Habilitada y Pago Verificado!")
-
-        contenido_certificado = f"""
-        ============================================================
-                        AQUACHECK PRO - CERTIFICADO HÍDRICO
-        ============================================================
-        Plataforma: AquaCheck // Advanced Lab
-        Fecha de Emisión: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
-        Estado: Apto para consumo / Certificado Oficial
-        ============================================================
-        """
-
         st.download_button(
             label="📥 Descargar Certificado Oficial",
             data=contenido_certificado,
