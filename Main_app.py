@@ -387,27 +387,7 @@ if modo_app == "💳 Certificación y Pagos":
             ============================================================
                             AQUACHECK PRO - CERTIFICADO HÍDRICO
             ============================================================
-            Plataforma: AquaCheck // Advanced Lab
-            Fecha de Emisión: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
-            Estado: Apto para consumo / Certificado Oficial
-            ============================================================
-            """
-
-            st.download_button(
-                label="📥 Descargar Certificado Oficial",
-                data=contenido_certificado,
-                file_name="Certificado_AquaCheck_Pro.txt",
-                mime="text/plain"
-            )
-            st.markdown("</div>", unsafe_allow_html=True)
-
-    if not st.session_state.pago_aprobado:
-        st.markdown("<div class='cyber-card'>", unsafe_allow_html=True)
-        st.write("Seleccione el método de pago nacional para desbloquear y descargar el certificado oficial de su análisis:")
-
-        st.info(
-            "**🇻🇪 Datos de Pago Móvil y Transferencia (100% Real):**\n\n"
-            "- **Monto a Pagar:** 3.00 USD (o su equivalente en Bs a tasa oficial)\n"
+            Plataforma
             "- **Titular:** Richard Oscar Valdez Pereira\n"
             "- **Cédula de Identidad:** `V 7.128.648`\n"
             "- **Teléfono (Ambos Bancos):** `0424-4131429`\n\n"
