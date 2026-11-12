@@ -339,55 +339,19 @@ def verificar_pago_gmail_real(referencia_usuario, monto_esperado=15.00):
         return False
 # ==========================================
 # MÓDULO SEGURO: CERTIFICACIÓN Y PAGOS
-# ==========================================
-if modo_app == "💳 Certificación y Pagos":
-    st.markdown("<div class='cyber-card'><h3>💳 Pasarela de Pagos y Certificación Hídrica</h3></div>", unsafe_allow_html=True)
-    
-    # Inicializar estado de pago en la sesión si no existe
-        # MÓDULO SEGURO: CERTIFICACIÓN Y PAGOS
-    if modo_app == "Certificación y Pagos":
-        st.markdown("<div class='cyber-card'><h3> Pasarela de Pagos y Certificación Hídrica</h3></div>", unsafe_allow_html=True)
+if modo_app == "Certificación y Pagos":
+    st.markdown("<div class='cyber-card'><h3> Pasarela de Pagos y Certificación Hídrica</h3></div>", unsafe_allow_html=True)
 
-        # Inicializar estado de pago en la sesión si no existe
-        if "pago_aprobado" not in st.session_state:
-            st.session_state.pago_aprobado = False
+    if "pago_aprobado" not in st.session_state:
+        st.session_state["pago_aprobado"] = False
 
-        if not st.session_state.pago_aprobado:
-            st.markdown("<div class='cyber-card'>", unsafe_allow_html=True)
-            st.write("Seleccione el método de pago nacional para desbloquear y descargar el certificado oficial de su análisis:")
+    if not st.session_state.get("pago_aprobado", False):
+        st.markdown("<div class='cyber-card'>", unsafe_allow_html=True)
+        st.write("Seleccione el método de pago nacional para desbloquear y descargar el certificado oficial de su análisis:")
 
-            st.info(
-                "**🇻🇪 Datos de Pago Móvil y Transferencia (100% Real):**\n\n"
-                "- **Monto a Pagar:** 3.00 USD (o su equivalente en Bs a tasa oficial)\n"
-                "- **Titular:** Richard Oscar Valdez Pereira\n"
-                "- **Cédula de Identidad:** `V 7.128.648`\n"
-                "- **Teléfono (Ambos Bancos):** `0424-4131429`\n\n"
-                "**1. Banco Provincial (Cuenta Corriente):**\n"
-                "`0108 0071 4301 0139 2896`\n\n"
-                "**2. Banco de Venezuela - BDV (Cuenta Corriente):**\n"
-                "`[Tu número de cuenta BDV]`"
-            )
-
-            ref_pago = st.text_input("Ingrese Referencia de Pago Móvil para Liberar el Archivo:")
-            
-            if st.button("Verificar Pago Nacional"):
-                if ref_pago and len(ref_pago.strip()) >= 4:
-                    st.session_state.pago_aprobado = True
-                    st.success("¡Referencia de pago registrada y verificada exitosamente!")
-                    st.rerun()
-                else:
-                    st.warning("Por favor ingrese una referencia de pago válida.")
-                    
-            st.markdown("</div>", unsafe_allow_html=True)
-        else:
-            st.markdown("<div class='cyber-card'>", unsafe_allow_html=True)
-            st.success("¡Certificación Hídrica Habilitada y Pago Verificado!")
-
-            contenido_certificado = f"""
-            ============================================================
-                            AQUACHECK PRO - CERTIFICADO HÍDRICO
-            ============================================================
-            Plataforma
+        st.info(
+            "**🇻🇪 Datos de Pago Móvil y Transferencia (100% Real):**\n\n"
+            "- **Monto a Pagar:** 3.00 USD (o su equivalente en Bs a tasa oficial)\n"
             "- **Titular:** Richard Oscar Valdez Pereira\n"
             "- **Cédula de Identidad:** `V 7.128.648`\n"
             "- **Teléfono (Ambos Bancos):** `0424-4131429`\n\n"
@@ -401,13 +365,35 @@ if modo_app == "💳 Certificación y Pagos":
         
         if st.button("Verificar Pago Nacional"):
             if ref_pago and len(ref_pago.strip()) >= 4:
-                st.session_state.pago_aprobado = True
+                st.session_state["pago_aprobado"] = True
                 st.success("¡Referencia de pago registrada y verificada exitosamente!")
                 st.rerun()
             else:
                 st.warning("Por favor ingrese una referencia de pago válida.")
                 
         st.markdown("</div>", unsafe_allow_html=True)
+    else:
+        st.markdown("<div class='cyber-card'>", unsafe_allow_html=True)
+        st.success("¡Certificación Hídrica Habilitada y Pago Verificado!")
+
+        contenido_certificado = f"""============================================================
+AQUACHECK PRO - CERTIFICADO HÍDRICO
+============================================================
+Plataforma: AquaCheck // Advanced Lab
+Fecha de Emisión: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+Titular: Richard Oscar Valdez Pereira
+Cédula: V 7.128.648
+Estado: Apto para consumo / Certificado Oficial
+============================================================"""
+
+        st.download_button(
+            label="📥 Descargar Certificado Oficial",
+            data=contenido_certificado,
+            file_name="Certificado_AquaCheck_Pro.txt",
+            mime="text/plain"
+        )
+        st.markdown("</div>", unsafe_allow_html=True)
+        
     else:
         st.markdown("<div class='cyber-card'>", unsafe_allow_html=True)
         st.success("¡Certificación Hídrica Habilitada y Pago Verificado!")
