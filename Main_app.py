@@ -287,17 +287,10 @@ def verificar_pago_gmail_real(referencia_usuario, monto_esperado=15.00):
         return False
     except Exception as e:
         return False
-import imaplib
-import email
+    except Exception as e:
+        pass
 
-def verificar_pago_gmail_real(referencia_usuario, monto_esperado=15.00):
-    """
-    Verifica de forma real en la bandeja de entrada de Gmail si la referencia existe.
-    """
-    try:
-        email_servidor = st.secrets["gmail"]["email_usuario"]
-        password_app = st.secrets["gmail"]["password_app"]
-# MÓDULO DE VERIFICACIÓN IMAP Y CERTIFICACIÓN
+# --- MÓDULO DE VERIFICACIÓN IMAP Y CERTIFICACIÓN ---
 import imaplib
 import email
 
@@ -389,5 +382,6 @@ Estado: Apto para consumo / Certificado Oficial
             mime="text/plain"
         )
         st.markdown("</div>", unsafe_allow_html=True)
+
         
             
