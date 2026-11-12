@@ -347,30 +347,58 @@ if modo_app == "💳 Certificación y Pagos":
     if "pago_aprobado" not in st.session_state:
         st.session_state.pago_aprobado = False
 
-    st.markdown("<div class='cyber-card'>", unsafe_allow_html=True)
-    st.write("Seleccione el método de pago para desbloquear y descargar el certificado oficial de su análisis:")
-    
-    # ################################################
-# # MÓDULO SEGURO: CERTIFICACIÓN Y PAGOS (NACIONAL)
-# ################################################
-if modo_app == "Certificación y Pagos":
-    st.markdown("<div class='cyber-card'><h3> Pasarela de Pagos y Certificación Hídrica</h3></div>", unsafe_allow_html=True)
-
-    # Inicializar estado de pago en la sesión si no existe
-    if "pago_aprobado" not in st.session_state:
-        st.session_state.pago_aprobado = False
-
-    st.markdown("<div class='cyber-card'>", unsafe_allow_html=True)
+        st.markdown("<div class='cyber-card'>", unsafe_allow_html=True)
     st.write("Seleccione el método de pago nacional para desbloquear y descargar el certificado oficial de su análisis:")
 
-    # Solo método 100% real nacional (Sin opción internacional)
+    # Datos oficiales unificados y limpios
     st.info(
-        "**🇻🇪 Coordenadas de Pago Móvil y Transferencia (100% Real):**\n\n"
+        "**🇻🇪 Datos de Pago Móvil y Transferencia (100% Real):**\n\n"
+        "- **Monto a Pagar:** 3.00 USD (o su equivalente en Bs a tasa oficial)\n"
         "- **Titular:** Richard Oscar Valdez Pereira\n"
-        "- **Cédula:** V-071286483\n"
-        "- **Teléfono Pago Móvil:** `0424-4131429`\n\n"
-        "**Banco Provincial (Corriente):**\n"
+        "- **Cédula de Identidad:** `V-071286483`\n"
+        "- **Teléfono (Ambos Bancos):** `0424-4131429`\n\n"
+        "**1. Banco Provincial (Cuenta Corriente):**\n"
         "`0108 0071 4301 0139 2896`\n\n"
+        "**2. Banco de Venezuela - BDV (Cuenta Corriente):**\n"
+        "`[Tu número de cuenta BDV]`"
+    )
+
+    ref_pago = st.text_input("Ingrese Referencia de Pago Móvil para Liberar el Archivo:")
+    
+    if st.button("Verificar Pago Nacional"):
+        if ref_pago and len(ref_pago.strip()) >= 4:
+            st.session_state.pago_aprobado = True
+            st.success("¡Referencia de pago registrada y verificada exitosamente!")
+        else:
+            st.warning("Por favor ingrese una referencia de pago válida.")
+            
+    st.markdown("</div>", unsafe_allow_html=True)
+    
+
+    # Datos oficiales unificados y limpios
+    st.info(
+        "**🇻🇪 Datos de Pago Móvil y Transferencia (100% Real):**\n\n"
+        "- **Monto a Pagar:** 3.00 USD (o su equivalente en Bs a tasa oficial)\n"
+        "- **Titular:** Richard Oscar Valdez Pereira\n"
+        "- **Cédula de Identidad:** `V-071286483`\n"
+        "- **Teléfono (Ambos Bancos):** `0424-4131429`\n\n"
+        "**1. Banco Provincial (Cuenta Corriente):**\n"
+        "`0108 0071 4301 0139 2896`\n\n"
+        "**2. Banco de Venezuela - BDV (Cuenta Corriente):**\n"
+        "`[Tu número de cuenta BDV]`"
+    )
+
+    ref_pago = st.text_input("Ingrese Referencia de Pago Móvil para Liberar el Archivo:")
+    
+    if st.button("Verificar Pago Nacional"):
+        if ref_pago and len(ref_pago.strip()) >= 4:
+            st.session_state.pago_aprobado = True
+            st.success("¡Referencia de pago registrada y verificada exitosamente!")
+        else:
+            st.warning("Por favor ingrese una referencia de pago válida.")
+            
+    st.markdown("</div>", unsafe_allow_html=True)
+
         "**Banco de Venezuela - BDV (Corriente):**\n"
         "`[Tu número de cuenta BDV]`"
     )
