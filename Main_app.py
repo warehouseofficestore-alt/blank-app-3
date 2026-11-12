@@ -142,8 +142,7 @@ elif modo_app == "🎛️ Panel Analítico Completo":
     with col2:
         st.markdown('<div class="cyber-card"><h3>Diagnóstico Integral y Emisión</h3></div>', unsafe_allow_html=True)
         
-        if st.button("Procesar Análisis e Iniciar Emisión"):
-            st.session_state['analisis_procesado'] = True
+        if st.button("Procesar Análisis e Iniciar Emisión"):           st.session_state['analisis_procesado'] = True
 
         if st.session_state.get('analisis_procesado', False):
             valido = (6.5 <= ph <= 8.5) and (turbidity <= 5.0) and (coliformes == "Ausente (0 UFC)")
@@ -318,33 +317,10 @@ def verificar_pago_gmail_real(referencia_usuario, monto_esperado=15.00):
         for msg_id in message_ids:
             res, msg_data = mail.fetch(msg_id, "(RFC822)")
             if res == "OK":
-                for response_part in msg_data:
-                    if isinstance(response_part, tuple):
-                        msg = email.message_from_bytes(response_part[1])
-                        body = ""
-                        if msg.is_multipart():
-                            for part in msg.walk():
-                                if part.get_content_type() == "text/plain":
-                                    body = part.get_payload(decode=True).decode(errors="ignore")
-                        else:
-                            body = msg.get_payload(decode=True).decode(errors="ignore")
-                        
-                        if referencia_usuario in body:
-                            mail.logout()
-                            return True
-                            
-        mail.logout()
-                return False
-    except Exception as e:
-        return False
-
-# MÓDULO DE VERIFICACIÓN IMAP Y CERTIFICACIÓN
-import imaplib
-import email
-
-def verificar_pago_gmail_real(referencia_usuario, monto_esperado=3.00):
-    """
-    Conecta a la bandeja de entrada vía IMAP para verificar 
+                File "/mount/src/blank-app-3/Main_app.py", line 337
+                  return False
+                 ^
+IndentationError: unexpected indent
     si llegó un correo de confirmación con la referencia bancaria.
     """
     try:
