@@ -297,32 +297,11 @@ def verificar_pago_gmail_real(referencia_usuario, monto_esperado=15.00):
     try:
         email_servidor = st.secrets["gmail"]["email_usuario"]
         password_app = st.secrets["gmail"]["password_app"]
-        
-        mail = imaplib.IMAP4_SSL("imap.gmail.com")
-        mail.login(email_servidor, password_app)
-        mail.select("inbox")
-        
-        search_query = f'(BODY "{referencia_usuario}")'
-        status, messages = mail.search(None, search_query)
-        
-        if status != "OK":
-            mail.logout()
-            return False
-            
-        message_ids = messages[0].split()
-        if not message_ids:
-            mail.logout()
-            return False
-            
-        for msg_id in message_ids:
-            res, msg_data = mail.fetch(msg_id, "(RFC822)")
-            if res == "OK":
-                File "/mount/src/blank-app-3/Main_app.py", line 337
-                  return False
-                 ^
-IndentationError: unexpected indent
-    si llegó un correo de confirmación con la referencia bancaria.
-    """
+        # MÓDULO DE VERIFICACIÓN IMAP Y CERTIFICACIÓN
+import imaplib
+import email
+
+def verificar_pago_gmail_real(referencia_usuario, monto_esperado=3.00):
     try:
         mail_user = st.secrets.get("GMAIL_USER", "tu_correo@gmail.com")
         mail_pass = st.secrets.get("GMAIL_APP_PASSWORD", "tu_password_de_aplicacion")
@@ -345,7 +324,6 @@ IndentationError: unexpected indent
 
         mail.logout()
         return True
-
     except Exception as e:
         return False
 
@@ -411,4 +389,6 @@ Estado: Apto para consumo / Certificado Oficial
             mime="text/plain"
         )
         st.markdown("</div>", unsafe_allow_html=True)
+    
+
                 
