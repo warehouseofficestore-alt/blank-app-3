@@ -365,14 +365,20 @@ if modo_app == "Certificación y Pagos":
         
         if st.button("Verificar Pago Nacional"):
             if ref_pago and len(ref_pago.strip()) >= 4:
-                st.session_state["pago_aprobado"] = True
-                st.success("¡Referencia de pago registrada y verificada exitosamente!")
-                st.rerun()
+                with st.spinner("Verificando transacción en los registros..."):
+                    pago_valido = verificar_pago_gmail_real(ref_pago.strip(), monto_esperado=3.00)
+                
+                if pago_valido:
+                    st.session_state["pago_aprobado"] = True
+                    st.success("¡Pago verificado exitosamente en el sistema!")
+                    st.rerun()
+                else:
+                    st.warning("No se encontró una confirmación automática para esta referencia. Verifique el número e intente de nuevo.")
             else:
                 st.warning("Por favor ingrese una referencia de pago válida.")
                 
-        st.markdown("</div>", unsafe_allow_html=True )
-                else:
+        st.markdown("</div>", unsafe_allow_html=True)
+    else:
         st.markdown("<div class='cyber-card'>", unsafe_allow_html=True)
         st.success("¡Certificación Hídrica Habilitada y Pago Verificado!")
 
@@ -393,6 +399,4 @@ Estado: Apto para consumo / Certificado Oficial
             mime="text/plain"
         )
         st.markdown("</div>", unsafe_allow_html=True)
-    
-         
         
