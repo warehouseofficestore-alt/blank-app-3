@@ -1,7 +1,6 @@
 import streamlit as st
 from datetime import datetime
 import base64
-from googleapiclient.discovery import build
 
 # --- AQUÍ DEFINES LA FUNCIÓN ---
 def verificar_pago_gmail_real(referencia_bancaria, monto_esperado=3.00):
@@ -281,7 +280,8 @@ else:
 import imaplib
 import email
 
-def verificar_pago_gmail_real(referencia_usuario, monto_esperado=15.00):
+def verificar_pago_gmail_real(referencia_usuario, monto_esperado=3.00):
+    from googleapiclient.discovery import build
     """
     Verifica de forma real en la bandeja de entrada de Gmail si la referencia existe.
     """
