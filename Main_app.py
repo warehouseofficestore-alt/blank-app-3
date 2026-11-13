@@ -426,8 +426,7 @@ if modo_app == "Certificación y Pagos":
             "**1. Banco Provincial (Cuenta Corriente):**\n"
             "`0108 0071 4301 0139 2896`\n\n"
             "**2. Banco de Venezuela - BDV (Cuenta Corriente):**\n"
-            "`[Tu número de cuenta BDV]`"
-        )
+            "`01020327990000391573`"
 
         ref_pago = st.text_input("Ingrese Referencia de Pago Móvil para Liberar el Archivo:")
         
