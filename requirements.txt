@@ -1,8 +1,4 @@
 streamlit
 pandas
 numpy
-opencv-python-headless
-plotly
-stripe
 google-api-python-client
-
