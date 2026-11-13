@@ -1,4 +1,44 @@
 import streamlit as st
+from datetime import datetime
+import base64
+from googleapiclient.discovery import build
+
+# --- AQUÍ DEFINES LA FUNCIÓN ---
+def verificar_pago_gmail_real(referencia_bancaria, monto_esperado=3.00):
+    try:
+        service = build('gmail', 'v1')
+        query = f'"{referencia_bancaria}"'
+        results = service.users().messages().list(userId='me', q=query).execute()
+        messages = results.get('messages', [])
+        
+        if not messages:
+            return False
+            
+        for msg in messages:
+            msg_data = service.users().messages().get(userId='me', id=msg['id'], format='full').execute()
+            snippet = msg_data.get('snippet', '').lower()
+            payload = msg_data.get('payload', {})
+            body = ""
+            
+            if 'parts' in payload:
+                for part in payload['parts']:
+                    if part.get('mimeType') == 'text/plain':
+                        data = part.get('body', {}).get('data', '')
+                        if data:
+                            body = base64.urlsafe_b64decode(data).decode('utf-8', errors='ignore').lower()
+            
+            contenido_total = (snippet + " " + body)
+            if referencia_bancaria.lower() in contenido_total:
+                return True
+                
+        return False
+    except Exception as e:
+        print(f"Error conectando a Gmail: {e}")
+        return False
+
+# --- EL RESTO DE TU CÓDIGO (Páginas, modo_app, etc.) ---
+
+import streamlit as st
 import pandas as pd
 import numpy as np
 from datetime import datetime
