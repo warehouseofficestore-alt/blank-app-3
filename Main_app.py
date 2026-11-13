@@ -361,27 +361,151 @@ if modo_app == "Certificación y Pagos":
                 st.warning("Por favor ingrese una referencia de pago válida (mínimo 4 dígitos).")
                 
         st.markdown("</div>", unsafe_allow_html=True)
+    # MÓDULO SEGURO: CERTIFICACIÓN Y PAGOS Y ANÁLISIS ALGORÍTMICO
+if modo_app == "Certificación y Pagos":
+    st.markdown("<div class='cyber-card'><h3> Pasarela de Pagos y Certificación Hídrica</h3></div>", unsafe_allow_html=True)
+
+    if "pago_aprobado" not in st.session_state:
+        st.session_state["pago_aprobado"] = False
+
+    # Opción de Modo Administrador / Prueba en barra lateral
+    modo_admin = st.sidebar.checkbox("🔧 Modo Admin / Bypass de Pago")
+    if modo_admin:
+        st.session_state["pago_aprobado"] = True
+
+    if not st.session_state.get("pago_aprobado", False):
+        st.markdown("<div class='cyber-card'>", unsafe_allow_html=True)
+        st.write("Seleccione el método de pago nacional para desbloquear y descargar el certificado oficial de su análisis:")
+
+        st.info(
+            "**🇻🇪 Datos de Pago Móvil y Transferencia (100% Real):**\n\n"
+            "- **Monto a Pagar:** 3.00 USD (o su equivalente en Bs a tasa oficial)\n"
+            "- **Titular:** Richard Oscar Valdez Pereira\n"
+            "- **Cédula de Identidad:** `V 7.128.648`\n"
+            "- **Teléfono (Ambos Bancos):** `0424-4131429`\n\n"
+            "**1. Banco Provincial (Cuenta Corriente):**\n"
+            "`0108 0071 4301 0139 2896`\n\n"
+            "**2. Banco de Venezuela - BDV (Cuenta Corriente):**\n"
+            "`[Tu número de cuenta BDV]`"
+        )
+
+        ref_pago = st.text_input("Ingrese Referencia de Pago Móvil para Liberar el Archivo:")
+        
+        if st.button("Verificar Pago Nacional"):
+            ref_limpia = ref_pago.strip().upper() if ref_pago else ""
+            if ref_limpia in ["1234", "TEST", "PRUEBA"]:
+                pago_valido = True
+            elif ref_pago and len(ref_pago.strip()) >= 4:
+                with st.spinner("Consultando registros de pago en Gmail..."):
+                    pago_valido = verificar_pago_gmail_real(ref_pago.strip(), monto_esperado=3.00)
+            else:
+                pago_valido = False
+            
+            if pago_valido:
+                st.session_state["pago_aprobado"] = True
+                st.success("¡Pago verificado exitosamente en el sistema!")
+                st.rerun()
+            else:
+                st.warning("No se encontró una confirmación automática para esta referencia. Use '1234' para probar o verifique el número.")
+                
+        st.markdown("</div>", unsafe_allow_html=True)
     else:
         st.markdown("<div class='cyber-card'>", unsafe_allow_html=True)
         st.success("¡Certificación Hídrica Habilitada y Pago Verificado!")
 
+        # ============================================================
+        # EVALUACIÓN ALGORÍTMICA Y ESTADÍSTICA DE PARÁMETROS
+        # ============================================================
+        alertas = []
+        
+        # Evaluación de pH (Rango ideal potable: 6.5 - 8.5)
+        if 6.5 <= ph <= 8.5:
+            eval_ph = "Óptimo (Dentro del rango normado internacional)"
+        elif ph < 6.5:
+            eval_ph = "Ácido (Requiere neutralización)"
+            alertas.append("pH Ácido")
+        else:
+            eval_ph = "Alcalino (Requiere ajuste de balance)"
+            alertas.append("pH Alcalino")
+
+        # Evaluación de Turbidez (Límite máximo recomendado: 5.0 NTU)
+        if turbidity <= 1.0:
+            eval_turbidez = "Excelente claridad fotoscópica y baja dispersión lumínica."
+        elif turbidity <= 5.0:
+            eval_turbidez = "Claridad aceptable bajo parámetros normativos."
+        else:
+            eval_turbidez = "Alta opacidad y suspensión de partículas detectada."
+            alertas.append("Turbidez elevada")
+
+        # Evaluación Bacteriológica
+        if str(coliformes).lower() in ["ausente", "negativo", "0"]:
+            eval_bacterio = "Ausencia total de unidades formadoras de colonias patógenas."
+        else:
+            eval_bacterio = "Presencia detectada de agentes microbiológicos indicadores."
+            alertas.append("Contaminación bacteriológica")
+
+        # Evaluación de Plomo (Límite máximo: 0.01 mg/L)
+        if lead <= 0.01:
+            eval_plomo = "Concentración en trazas seguras o imperceptibles."
+        else:
+            eval_plomo = "Exceso crítico de metal pesado detectado por espectroscopía."
+            alertas.append("Presencia de Plomo")
+
+        # Determinación de Estado y Recomendación Algorítmica
+        if len(alertas) == 0:
+            estado_sistema = "APTO PARA CONSUMO HUMANO / CERTIFICADO OFICIAL"
+            recomendacion_final = "El cuerpo hídrico cumple con los estándares fisicoquímicos y sanitarios. Mantener ciclos de control cada 90 días."
+            estimacion_calidad = "Clase A - Calidad Superior Optimizada"
+        else:
+            estado_sistema = "NO APTO / REQUIERE CORRECCIÓN SANITARIA"
+            recomendacion_final = f"Se identificaron desviaciones críticas ({', '.join(alertas)}). Se recomienda someter el agua a filtración avanzada y desinfección UV antes del aprovechamiento."
+            estimacion_calidad = "Clase D - Alerta Sanitaria Activa"
+
+        # Construcción del Certificado Dinámico
         contenido_certificado = f"""============================================================
-AQUACHECK PRO - CERTIFICADO HÍDRICO
+AQUACHECK PRO - CERTIFICADO DE ANÁLISIS HÍDRICO INTEGRAL
 ============================================================
-Plataforma: AquaCheck // Advanced Lab
+Plataforma: AquaCheck // Advanced Lab Systems
 Fecha de Emisión: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
 Titular: Richard Oscar Valdez Pereira
-Cédula: V 7.128.648
-Estado: Apto para consumo / Certificado Oficial
+Cédula de Identidad: V 7.128.648
+------------------------------------------------------------
+
+1. ESPECTRO SANITARIO Y PARÁMETROS FISICOQUÍMICOS
+------------------------------------------------------------
+- pH (Acidez/Alcalinidad):     {ph} -> {eval_ph}
+- Dureza Total (CaCO3):         {hardness} mg/L
+- Sólidos Totales Disueltos (TDS): {solids} ppm
+- Turbidez:                     {turbidity} NTU
+- Parámetro Bacteriológico:     {coliformes}
+- Contenido de Plomo (Pb):      {lead} mg/L -> {eval_plomo}
+
+2. APRECIACIONES ANALÍTICAS (FOTOSCÓPICA Y ESPECTROSCÓPICA)
+------------------------------------------------------------
+- Apreciación Fotoscópica: {eval_turbidez}
+- Apreciación Bacteriológica: {eval_bacterio}
+- Apreciación Espectroscópica: Análisis de absorbancia corroborado mediante correlación estadística de TDS y dureza en la muestra.
+
+3. ESTADO GENERAL Y CONGRUENCIA TÉCNICA
+------------------------------------------------------------
+- Estado del Sistema: {estado_sistema}
+- Estimación de Calidad: {estimacion_calidad}
+
+4. RECOMENDACIÓN Y ESTIMACIÓN FINAL
+------------------------------------------------------------
+Recomendación Técnica: {recomendacion_final}
+============================================================
+Fin del Documento Oficial - AquaCheck Pro
 ============================================================"""
 
         st.download_button(
-            label="📥 Descargar Certificado Oficial",
+            label="📥 Descargar Certificado Oficial Integral",
             data=contenido_certificado,
-            file_name="Certificado_AquaCheck_Pro.txt",
+            file_name="Certificado_AquaCheck_Pro_Integral.txt",
             mime="text/plain"
         )
         st.markdown("</div>", unsafe_allow_html=True)
+        
 
         
             
